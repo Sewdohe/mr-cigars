@@ -1,0 +1,42 @@
+[12:51:00.246] Global cache location '/home/sewdohe/.cache/typescript/4.8', safe file path '/home/sewdohe/.nvm/versions/node/v16.16.0/lib/node_modules/typescript/lib/typingSafeList.json', types map path /home/sewdohe/.nvm/versions/node/v16.16.0/lib/node_modules/typescript/lib/typesMap.json
+[12:51:00.247] Processing cache location '/home/sewdohe/.cache/typescript/4.8'
+[12:51:00.247] Trying to find '/home/sewdohe/.cache/typescript/4.8/package.json'...
+[12:51:00.249] Loaded content of '/home/sewdohe/.cache/typescript/4.8/package.json': {"private":true,"dependencies":{"types-registry":"^0.1.614"},"devDependencies":{"@types/bootstrap":"^5.2.5","@types/common-tags":"^1.8.1","@types/eslint":"^8.4.6","@types/express":"^4.17.14","@types/glob":"^8.0.0","@types/gray-percentage":"^2.0.0","@types/mime":"^3.0.1","@types/minimatch":"^5.1.2","@types/node":"^18.7.17","@types/object-assign":"^4.0.30","@types/prop-types":"^15.7.5","@types/reach__router":"^1.3.11","@types/react":"^18.0.21","@types/react-bootstrap":"^0.32.31","@types/react-dom":"^18.0.6","@types/react-helmet":"^6.1.5","@types/react-transition-group":"^4.4.5","@types/styled-components":"^5.1.26","@types/typography":"^0.16.4","@types/typography-breakpoint-constants":"^0.16.0"}}
+[12:51:00.249] Loaded content of '/home/sewdohe/.cache/typescript/4.8/package-lock.json'
+[12:51:00.263] Adding entry into typings cache: 'bootstrap' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/bootstrap/index.d.ts'
+[12:51:00.266] Adding entry into typings cache: 'common-tags' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/common-tags/index.d.ts'
+[12:51:00.269] Adding entry into typings cache: 'eslint' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/eslint/index.d.ts'
+[12:51:00.271] Adding entry into typings cache: 'express' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/express/index.d.ts'
+[12:51:00.273] Adding entry into typings cache: 'glob' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/glob/index.d.ts'
+[12:51:00.275] Adding entry into typings cache: 'gray-percentage' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/gray-percentage/index.d.ts'
+[12:51:00.276] Adding entry into typings cache: 'mime' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/mime/index.d.ts'
+[12:51:00.278] Adding entry into typings cache: 'minimatch' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/minimatch/index.d.ts'
+[12:51:00.285] Adding entry into typings cache: 'node' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/node/index.d.ts'
+[12:51:00.287] Adding entry into typings cache: 'object-assign' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/object-assign/index.d.ts'
+[12:51:00.289] Adding entry into typings cache: 'prop-types' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/prop-types/index.d.ts'
+[12:51:00.291] Adding entry into typings cache: 'reach__router' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/reach__router/index.d.ts'
+[12:51:00.295] Adding entry into typings cache: 'react' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/react/index.d.ts'
+[12:51:00.297] Adding entry into typings cache: 'react-bootstrap' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/react-bootstrap/index.d.ts'
+[12:51:00.299] Adding entry into typings cache: 'react-dom' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/react-dom/index.d.ts'
+[12:51:00.302] Adding entry into typings cache: 'react-helmet' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/react-helmet/index.d.ts'
+[12:51:00.303] Adding entry into typings cache: 'react-transition-group' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/react-transition-group/index.d.ts'
+[12:51:00.305] Adding entry into typings cache: 'styled-components' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/styled-components/index.d.ts'
+[12:51:00.306] Adding entry into typings cache: 'typography' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/typography/index.d.ts'
+[12:51:00.307] Adding entry into typings cache: 'typography-breakpoint-constants' => '/home/sewdohe/.cache/typescript/4.8/node_modules/@types/typography-breakpoint-constants/index.d.ts'
+[12:51:00.307] Finished processing cache location '/home/sewdohe/.cache/typescript/4.8'
+[12:51:00.308] Process id: 18900
+[12:51:00.308] NPM location: /home/sewdohe/.nvm/versions/node/v16.16.0/bin/npm (explicit '--npmLocation' not  provided)
+[12:51:00.308] validateDefaultNpmLocation: false
+[12:51:00.308] Npm config file: /home/sewdohe/.cache/typescript/4.8/package.json
+[12:51:00.308] Updating types-registry npm package...
+[12:51:00.308] Exec: /home/sewdohe/.nvm/versions/node/v16.16.0/bin/npm install --ignore-scripts types-registry@latest
+[12:51:01.688]     Succeeded. stdout:
+    
+    up to date, audited 36 packages in 1s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+[12:51:01.689] Updated types-registry npm package
