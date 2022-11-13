@@ -70,10 +70,10 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
     if (currentUser) {
       // @ts-ignore
       const _unSub = onSnapshot(doc(db, "users", currentUser.uid), (doc: DocumentSnapshot<CustomerDocument>) => {
-        console.log("cart init!");
+        // console.log("cart init!");
         let data: CustomerDocument = doc.data()!;
         if(data) {
-          console.log('user Data: ', data)
+          // console.log('user Data: ', data)
           updateCart(data.cart);
           getCartQty();
           setOrders(data.orders)
@@ -106,23 +106,23 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
       id: newItem.id,
     };
 
-    console.log(variation)
+    // console.log(variation)
 
-    console.log(newLine)
+    // console.log(newLine)
 
     const existingIndex: number | undefined = cart?.findIndex((cart) => {
       // get the index of the item in the cart array
       // if the user has already added it to their cart.
       return cart.id == newItem.id;
     });
-    console.log(existingIndex == -1 ? 'Item is a new line, no variations' : 'the item is already in the cart')
+    // console.log(existingIndex == -1 ? 'Item is a new line, no variations' : 'the item is already in the cart')
 
     if (existingIndex == -1 && cart) {
-      console.log('adding new item line')
+      // console.log('adding new item line')
       // if eI == -1 than we didn't find the item in the cart already.
       // this is a new item, so add it as a new cart-line.
-      console.log("fresh item, added to the cart.");
-      console.log(variation);
+      // console.log("fresh item, added to the cart.");
+      // console.log(variation);
       let newCart = cart!.slice();
       newCart.push(newLine);
 
@@ -139,15 +139,15 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
             variation: variation,
           }),
         }).then(() => {
-          console.log("item push successful!");
+          // console.log("item push successful!");
         }).catch((e) => console.error(e)).finally(() => {
           // getTotalPrice()
         });
       } else {
-        console.log("user is not logged in or cart is the same");
+        // console.log("user is not logged in or cart is the same");
       }
     } else {
-      console.log('item is in the cart, so its a new variation or a qty adjustment')
+      // console.log('item is in the cart, so its a new variation or a qty adjustment')
       // we found the item in the cart.
       // we will be modifying it in some way, so create a copy using slice
       let newCart = cart!.slice();
@@ -164,16 +164,16 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
 
       if (attribIndex != -1) {
         // if we land here, this variation is already in the cart. Adjust qty only.
-        console.log('this is a qty adjustment on a variation')
+        // console.log('this is a qty adjustment on a variation')
         newCart[attribIndex].quantity = prevValue![attribIndex].quantity + qty;
 
-        console.log("sending cart to firebase");
+        // console.log("sending cart to firebase");
         if (currentUser && prevValue != newCart) {
           let docRef = doc(db, "users", currentUser.uid);
           updateDoc(docRef, {
             cart: newCart
           }).then(() => {
-            console.log("item push successful!");
+            // console.log("item push successful!");
           }).finally(() => {
             // getTotalPrice()
           })
@@ -181,13 +181,13 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
       } else {
         // this variation doesn't exist already. treat as a new line.
         newCart = [...prevValue!, newLine];
-        console.log("sending cart to firebase", newCart);
+        // console.log("sending cart to firebase", newCart);
         if (currentUser && prevValue != newCart) {
           let docRef = doc(db, "users", currentUser.uid);
           updateDoc(docRef, {
             cart: newCart
           }).then(() => {
-            console.log("item push successful!");
+            // console.log("item push successful!");
           }).finally(() => {
             // getTotalPrice()
           })
@@ -197,14 +197,14 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
   };
 
   const getTotalPrice = () => {
-    console.warn('Calculating Price')
+    // console.warn('Calculating Price')
     let tempTotal: number = 0;
     cart?.forEach(line => {
       tempTotal += (line.quantity * line.itemPrice)
-      console.warn('line price is: ', line.quantity * line.itemPrice)
+      // console.warn('line price is: ', line.quantity * line.itemPrice)
     })
     setTotalPrice(tempTotal);
-    console.log('new total price is: ', cartTotal)
+    // console.log('new total price is: ', cartTotal)
   }
 
   const getCartQty = () => {
