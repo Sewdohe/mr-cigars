@@ -10,3 +10,7 @@ body::-webkit-scrollbar-thumb {
     background: green;
     border-radius: 10px;
 }
+
+.minus {
+    color: red;
+}

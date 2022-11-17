@@ -30,6 +30,7 @@ function handleSignOut() {
 
 const isBrowser = typeof window !== "undefined"
 
+// TODO: Show Mr.Cigars logo
 
 // @ts-ignore
 const Nav = () => {

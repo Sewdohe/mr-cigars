@@ -30,6 +30,8 @@ const CartPage = () => {
     console.log("closed");
   };
 
+  //TODO: show order sent confirmation
+
   return (
     <Layout>
       <div style={{ margin: "1rem" }}>

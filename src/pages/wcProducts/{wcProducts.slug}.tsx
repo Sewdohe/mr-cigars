@@ -23,6 +23,14 @@ const PriceText = styled.span`
   font-weight: bold;
 `;
 
+const Container = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+`
+
 const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   const { wcProducts: product } = data;
 
@@ -86,13 +94,7 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
     addToCart(product, qty, [attrib0, attrib1, attrib2, attrib3]);
   };
 
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  `
+
 
   return (
     <Layout>
