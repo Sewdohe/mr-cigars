@@ -4,6 +4,18 @@ require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+interface SearchResult {
+    allWcProducts: [
+      {
+        id: string
+      }
+    ]
+}
+
+interface ItemData {
+  id: string
+}
+
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `Mr Cigars`,
@@ -23,6 +35,62 @@ const config: GatsbyConfig = {
       resolve: "gatsby-plugin-manifest",
       options: {
         icon: "src/images/icon.png",
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-local-search',
+      options: {
+        // A unique name for the search index. This should be descriptive of
+        // what the index contains. This is required.
+        name: 'items',
+
+        // Set the search engine to create the index. This is required.
+        // The following engines are supported: flexsearch, lunr
+        engine: 'flexsearch',
+
+        // Provide options to the engine. This is optional and only recommended
+        // for advanced users.
+        //
+        // Note: Only the flexsearch engine supports options.
+        engineOptions: '',
+
+        // GraphQL query used to fetch all data for the search index. This is
+        // required.
+        query: `
+        {
+          allWcProducts {
+            nodes {
+              id
+              name
+              slug
+            }
+          }
+        }
+        `,
+
+        // Field used as the reference value for each document.
+        // Default: 'id'.
+        ref: 'name',
+
+        // List of keys to index. The values of the keys are taken from the
+        // normalizer function below.
+        // Default: all fields
+        index: ['id', 'name', 'slug'],
+
+        // List of keys to store and make available in your UI. The values of
+        // the keys are taken from the normalizer function below.
+        // Default: all fields
+        store: ['id', 'name', 'slug'],
+
+        // Function used to map the result from the GraphQL query. This should
+        // return an array of items to index in the form of flat objects
+        // containing properties to index. The objects must contain the `ref`
+        // field above (default: 'id'). This is required.
+        //@ts-ignore
+        normalizer: ({ data }) => {
+          //@ts-ignore
+          return data.allWcProducts.nodes.map(item => item)
+        }
       },
     },
     "gatsby-plugin-sharp",
@@ -53,16 +121,44 @@ const config: GatsbyConfig = {
         removeFirebaseServiceWorker: false,
       },
     },
+    // {
+    //   resolve: "@pasdo501/gatsby-source-woocommerce",
+    //   options: {
+    //     // Base URL of WordPress site
+    //     api: "dariwholesales.com",
+    //     // true if using https. false otherwise.
+    //     https: true,
+    //     api_keys: {
+    //       consumer_key: process.env.CONSUMER_KEY,
+    //       consumer_secret: process.env.CONSUMER_SECRET,
+    //     },
+    //     // Array of strings with fields you'd like to create nodes for...
+    //     fields: [
+    //       "products", 
+    //       "products/categories", 
+    //       "variations"],
+    //   },
+    // },
+    {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /assets/ // See below to configure properly
+        }
+      }
+    },
     {
       resolve: "@pasdo501/gatsby-source-woocommerce",
       options: {
         // Base URL of WordPress site
-        api: "dariwholesales.com",
+        api: "cigars.local",
+        verbose: true,
         // true if using https. false otherwise.
-        https: true,
+        https: false,
+        query_string_auth: true, 
         api_keys: {
-          consumer_key: process.env.CONSUMER_KEY,
-          consumer_secret: process.env.CONSUMER_SECRET,
+          consumer_key: 'ck_0162a2e56cab5fcf46bf2a78f55ef72c137bd995',
+          consumer_secret: 'cs_62d1c26da64dd278da9b334b5706d3b6035ed2b7',
         },
         // Array of strings with fields you'd like to create nodes for...
         fields: ["products", "products/categories", "variations"],

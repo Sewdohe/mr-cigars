@@ -6,9 +6,6 @@ import { NextUIProvider } from "@nextui-org/react";
 // @ts-ignore
 import { lightTheme } from "../styles/nextUITheme";
 
-import AuthProvider from "./AuthContext";
-import CartProvider from "../providers/CartProdiver";
-
 const SiteContainer = styled.div`
   display: flex;
   flex-direction: column;

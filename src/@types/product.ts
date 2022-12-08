@@ -36,6 +36,9 @@ export interface Product {
           id: string;
         }
       ]
+      image: {
+        src: string;
+      }
     }
   ] | null
 }

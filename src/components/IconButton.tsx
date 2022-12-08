@@ -11,7 +11,7 @@ export const IconButton = styled('button', {
   borderRadius: '100%',
   margin: '0',
   bg: 'transparent',
-  color: '#7BE3A8',
+  color: 'black',
   transition: '$default',
   '&:hover': {
     opacity: '1'

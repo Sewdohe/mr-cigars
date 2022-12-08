@@ -3,12 +3,11 @@ import Layout from "../components/Layout";
 
 import CartContext from "../contexts/CartContext";
 import { CartContextType } from "../@types/cart";
-import { FirebaseCartLine } from "../providers/CartProdiver";
-import { Table, Loading, Button, Modal, Row, Text } from "@nextui-org/react";
-import uuid from "react-uuid";
+import { Loading, Button, Modal, Text } from "@nextui-org/react";
 
 import { useMediaQuery } from 'react-responsive'
 import styled from "styled-components";
+import { CartDisplay } from "../components/CartDisplay";
 
 const TotalContainer = styled.div`
   display: flex;
@@ -34,47 +33,28 @@ const CartPage = () => {
 
   return (
     <Layout>
-      <div style={{ margin: "1rem" }}>
+      <div style={{ width: '100%' }}>
         {cart ? (
           <>
-          <Table sticked compact striped bordered css={{ width: "100%", fontSize: `${isTabletOrMobile ? "2vw" : "1.5vw"}` }}>
-            <Table.Header>
-              <Table.Column>Item Name</Table.Column>
-              <Table.Column>Item Price</Table.Column>
-              <Table.Column>Type/Flavor</Table.Column>
-              <Table.Column>Quantity</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {cart ? (
-             // @ts-ignore 
-                cart.map((line: FirebaseCartLine) => {
-                  return (
-                    <Table.Row key={uuid()}>
-                      <Table.Cell>{line.itemName}</Table.Cell>
-                      <Table.Cell>${line.itemPrice * 1}</Table.Cell>
-                      <Table.Cell>{line.variation}</Table.Cell>
-                      <Table.Cell>x{line.quantity}</Table.Cell>
-                    </Table.Row>
-                  );
-                })
-              ) : (
-                <p></p>
-              )}
-            </Table.Body>
-          </Table>
-          <TotalContainer>
-            <Text h2>Order Total:</Text>
-            <Text b h2 color="red">${Math.trunc(totalPrice)}</Text>
-          </TotalContainer>
+            <CartDisplay></CartDisplay>
+            <TotalContainer>
+              <Text h2>Order Total:</Text>
+              <Text b h2 color="red">${Math.trunc(totalPrice)}</Text>
+            </TotalContainer>
           </>
         ) : (
           <Loading></Loading>
         )}
       </div>
 
-      <Button auto shadow onClick={handler}>
-        Confirm Order
-      </Button>
+      {cart && cart.length > 0 ? (
+        <Button auto shadow onClick={handler}>
+          Confirm Order
+        </Button>
+      ) : (
+        <Button color="secondary">Go Shop!</Button>
+      )}
+
       <Modal
         closeButton
         aria-labelledby="modal-title"

@@ -218,8 +218,24 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
     setCartTotal(total);
   };
 
+  const modifyLineQty = (method: "inc" | "dec", index: number) => {
+    let docRef = doc(db, "users", currentUser!.uid);
+    if(method == "inc" && cart) {
+      cart[index].quantity ++;
+      updateDoc(docRef, {
+        cart
+      }).then(() => console.log('incremented cart'))
+    } else if (method == "dec" && cart) {
+      cart[index].quantity --;
+      updateDoc(docRef, {
+        cart
+      }).then(() => console.log('decremented cart'))
+    }
+    
+  }
+
   const confirmOrder = () => {
-    let newOrders = orders;
+    let newOrder = orders;
     let firebaseOrder: FirebaseOrder
 
     // transform the "cart" into an "order"
@@ -238,13 +254,14 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
       firebaseOrder.cart.forEach(cartLine => {
         firebaseOrder.total += cartLine.itemPrice * cartLine.quantity
       })
-      newOrders?.push({...firebaseOrder});
+      newOrder?.push({...firebaseOrder});
+      console.log(newOrder)
 
       // Ensure user is logged in, cart is loaded, and cart is not empty
       if (currentUser && cart && cart.length != 0) {
         let docRef = doc(db, "users", currentUser.uid); // get current user document
         updateDoc(docRef, { // update user document with the new order
-          orders: newOrders
+          orders: newOrder
         }).catch(err => {
           console.error(err)
         }).then(() => {
@@ -270,7 +287,8 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
         getTotal: getCartQty,
         totalPrice,
         confirmOrder,
-        userDocument: userDocument!
+        userDocument: userDocument!,
+        modifyLineQty
       }}
     >
       {children}

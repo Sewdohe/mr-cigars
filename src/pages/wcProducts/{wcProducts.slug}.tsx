@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { graphql } from "gatsby";
 import Layout from "../../components/Layout";
 import { Product } from "../../@types/product";
@@ -24,12 +24,13 @@ const PriceText = styled.span`
 `;
 
 const Container = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+`;
 
 const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   const { wcProducts: product } = data;
@@ -37,10 +38,11 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   let hasAttributes: boolean;
   let attributes: string[] = [];
 
-  const { addToCart } = React.useContext(
-    CartContext
-  ) as CartContextType;
+  const { addToCart } = React.useContext(CartContext) as CartContextType;
   const [qty, setQty] = useState(1);
+  const [selectedImageVariation, setSelectedImageVariation] = useState(
+    product.images[0].src ? product.images[0].src : ""
+  );
 
   // SET ATTRIBUTE STATES
   // THE MAX ATTRIBUTES OF ANY ITEM ARE 4
@@ -60,10 +62,10 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
     product.attributes ? product.attributes[3]?.options?.[0] : ""
   );
 
-  const [selected0, setSelected0] = useState(attrib0)
-  const [selected1, setSelected1] = useState(attrib1)
-  const [selected2, setSelected2] = useState(attrib2)
-  const [selected3, setSelected3] = useState(attrib3)
+  const [selected0, setSelected0] = useState(attrib0);
+  const [selected1, setSelected1] = useState(attrib1);
+  const [selected2, setSelected2] = useState(attrib2);
+  const [selected3, setSelected3] = useState(attrib3);
 
   if (attrib0 === undefined) {
     setAttrib0("");
@@ -78,13 +80,6 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
     setAttrib3("");
   }
 
-  // useEffect(() => {
-  //   console.log(attrib0);
-  //   console.log(attrib1);
-  //   console.log(attrib2);
-  //   console.log(attrib3);
-  // }, [attrib0, attrib1, attrib2, attrib3]);
-
   // @ts-ignore
   product.attributes.length != 0
     ? (hasAttributes = true)
@@ -93,8 +88,6 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   const addItemToCart = () => {
     addToCart(product, qty, [attrib0, attrib1, attrib2, attrib3]);
   };
-
-
 
   return (
     <Layout>
@@ -107,7 +100,7 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
           {product.images.length > 0 ? (
             <img
               style={{ maxWidth: "175px", maxHeight: "175px" }}
-              src={product.images[0].src}
+              src={selectedImageVariation}
               alt={"product image"}
             />
           ) : (
@@ -119,14 +112,8 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
         <Box sx={{ minWidth: "100px" }}>
           {product.attributes?.map((attribute, index) => {
             return (
-              <FormControl
-                key={uuid()}
-                fullWidth
-                style={{ margin: "10px" }}
-              >
-                <InputLabel id={attribute?.name}>
-                  {attribute?.name}
-                </InputLabel>
+              <FormControl key={uuid()} fullWidth style={{ margin: "10px" }}>
+                <InputLabel id={attribute?.name}>{attribute?.name}</InputLabel>
                 <Select
                   labelId="attrib-select-id"
                   id="attrib-select"
@@ -134,7 +121,29 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
                   value={eval(`attrib${index}`)}
                   label={attribute?.name}
                   autoWidth
-                  onChange={(e) => { eval(`setAttrib${index}(e.target.value)`)}}
+                  onChange={(e) => {
+                    let neededIndex = 0;
+                    product.product_variations?.forEach((v, i) => {
+                      v.attributes.forEach((a, idx) => {
+                        if (a.option == e.target.value) {
+                          // we found the attr we needed
+                          neededIndex = i;
+                        }
+                        console.log(
+                          product.product_variations![neededIndex].image.src
+                        );
+                        setSelectedImageVariation(
+                          product.product_variations![
+                            neededIndex
+                          ].image.src.replace(
+                            "cigars.local",
+                            "dariwholesales.com"
+                          )
+                        );
+                      });
+                    });
+                    eval(`setAttrib${index}(e.target.value)`);
+                  }}
                 >
                   {attribute.options?.map((o) => {
                     return (
@@ -168,7 +177,9 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
         </div>
 
         {/* BUY BUTTON */}
-        <Button color="primary" onClick={addItemToCart}>Add to Cart</Button>
+        <Button color="primary" onClick={addItemToCart}>
+          Add to Cart
+        </Button>
       </Container>
     </Layout>
   );

@@ -34,7 +34,7 @@ export const ProductCard = ({ item }: Props) => {
         </Card.Header>
         {item.images.length > 0 ? (
           <Card.Image
-            src={item.images[0].src}
+            src={item.images[0].src.replace('cigars.local', 'dariwholesales.com')}
             width="300px"
             height="300px"
             objectFit="cover"

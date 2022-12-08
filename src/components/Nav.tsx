@@ -1,6 +1,7 @@
 import React from "react";
 import { navigate, Link } from "gatsby";
-import { Navbar, Button, Text, Avatar, Row } from "@nextui-org/react";
+import { Navbar, Button, Text, Avatar, Row, Tooltip } from "@nextui-org/react";
+import { LogoutTwoTone } from "@mui/icons-material";
 
 import { NextCart } from "./NextCart";
 
@@ -8,8 +9,11 @@ import { useAuthValue } from "./AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "./Firebase";
 
+import Logo from '../../assets/mr-cigars-logo-web.svg'
+
 import uuid from 'react-uuid';
 import Notifications from "./Notifications";
+import styled from "styled-components";
 
 const NavItems = [
   {
@@ -29,6 +33,11 @@ function handleSignOut() {
 }
 
 const isBrowser = typeof window !== "undefined"
+
+const LogoSVG = styled(Logo)`
+  height: 60px;
+  width: auto;
+`
 
 // TODO: Show Mr.Cigars logo
 
@@ -73,11 +82,15 @@ const Nav = () => {
     );
   } else {
     details = (
-      <Row>
-        <Avatar onClick={() => navigate('/profile')} color="primary" bordered css={{ margin: '0 1rem' }} text={currentUser.displayName!} />
-        <Button auto flat onClick={handleSignOut}>
-          Log Out
-        </Button>
+      <Row justify="center" align="center">
+        <Tooltip placement="left" content={"View Profile"}>
+          <Avatar onClick={() => navigate('/profile')} color="primary" bordered css={{ margin: '0 1rem' }} text={currentUser.displayName!} />
+        </Tooltip>
+        <Tooltip placement="left" content={"Sign Out"}>
+          <Button color="warning" size="sm" rounded auto flat onClick={handleSignOut}>
+            <LogoutTwoTone />
+          </Button>
+        </Tooltip>
       </Row>
     );
   }
@@ -99,16 +112,10 @@ const Nav = () => {
 
   return (
     <div>
-      <Navbar variant="static">
+      <Navbar maxWidth="fluid" variant="static">
         <Navbar.Toggle showIn="sm" aria-label="toggle navigation" />
-        <Navbar.Brand>
-          <Text
-            color="inherit"
-            hideIn="xs"
-            css={{ fontSize: "2rem", margin: "auto auto" }}
-          >
-            Mr.Cigars
-          </Text>
+        <Navbar.Brand hideIn="xs">
+          <LogoSVG />
         </Navbar.Brand>
         <Navbar.Content variant="highlight" hideIn="xs">
           {NavItems.map((navItem) => {
@@ -125,11 +132,7 @@ const Nav = () => {
             );
           })}
         </Navbar.Content>
-        <Navbar.Content>
-        </Navbar.Content>
-
         {/* user account area */}
-        {/* <Navbar.Content activeColor={"primary"}></Navbar.Content> */}
         <Navbar.Content activeColor="primary" showIn="xs" >
           <Navbar.Collapse>
             {collapseItems.map((item, index) => (
@@ -150,7 +153,7 @@ const Nav = () => {
 
         <Navbar.Content>
           {currentUser ? (
-            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
               <Notifications />
               <NextCart />
             </div>

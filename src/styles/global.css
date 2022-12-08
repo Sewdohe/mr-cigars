@@ -14,3 +14,8 @@ body::-webkit-scrollbar-thumb {
 .minus {
     color: red;
 }
+
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}

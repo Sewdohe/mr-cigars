@@ -3,19 +3,20 @@ import { navigate } from "gatsby";
 import CartContext from "../contexts/CartContext";
 import { CartContextType } from "../@types/cart";
 
-import { Button, Modal, Text, Table, Loading } from "@nextui-org/react";
+import { Button, Modal, Text, Table, Loading, Row } from "@nextui-org/react";
 import { FirebaseCartLine } from "../providers/CartProdiver";
 import { useAuthValue } from "../components/AuthContext";
-import uuid from "react-uuid";
 import { useMediaQuery } from "react-responsive";
+import { CartDisplay } from "./CartDisplay";
+
 
 export const NextCart = () => {
   const { currentUser } = useAuthValue();
 
   // CART VARIABLES
-  const { cart, total, getTotal } = useContext(CartContext) as CartContextType;
+  const { cart, total, getTotal, modifyLineQty } = useContext(CartContext) as CartContextType;
 
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 900px)" });
 
   // MODAL VARIABLES
   const [visible, setVisible] = React.useState(false);
@@ -27,20 +28,27 @@ export const NextCart = () => {
   };
 
   useEffect(() => {
-      getTotal();
-  }, [ cart, currentUser ])
+    getTotal();
+  }, [cart, currentUser]);
 
   return (
     <div>
       {cart ? (
         <div>
-          <Button light auto color="primary" onClick={handler}>
+          <Button
+            css={{ padding: "0" }}
+            size={"sm"}
+            light
+            auto
+            onClick={handler}
+          >
             Cart ({total})
           </Button>
           <Modal
-            width="60%"
+            scroll
             blur
             closeButton
+            fullScreen={true}
             open={visible}
             onClose={closeHandler}
           >
@@ -48,32 +56,8 @@ export const NextCart = () => {
               <Text css={{ fontSize: "1.5rem" }}>Shopping Cart</Text>
             </Modal.Header>
 
-            <Modal.Body>
-            <Table sticked compact striped bordered css={{ width: "100%", fontSize: `${isTabletOrMobile ? "2vw" : "1.5vw"}` }}>
-            <Table.Header>
-              <Table.Column>Item Name</Table.Column>
-              <Table.Column>Item Price</Table.Column>
-              <Table.Column>Type/Flavor</Table.Column>
-              <Table.Column>Quantity</Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {cart ? (
-              // @ts-ignore
-                cart.map((line: FirebaseCartLine) => {
-                  return (
-                    <Table.Row key={uuid()}>
-                      <Table.Cell>{line.itemName}</Table.Cell>
-                      <Table.Cell>${line.itemPrice * 1}</Table.Cell>
-                      <Table.Cell>{line.variation}</Table.Cell>
-                      <Table.Cell>x{line.quantity}</Table.Cell>
-                    </Table.Row>
-                  );
-                })
-              ) : (
-                <p></p>
-              )}
-            </Table.Body>
-          </Table>
+            <Modal.Body noPadding={true}>
+              <CartDisplay />
             </Modal.Body>
 
             <Modal.Footer>

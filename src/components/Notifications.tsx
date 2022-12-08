@@ -3,7 +3,7 @@ import { useAuthValue } from "./AuthContext";
 import { IconButton } from './IconButton';
 import { NotificationsTwoTone } from "@mui/icons-material";
 import { db } from './Firebase'
-import { Button, Popover } from "@nextui-org/react";
+import { Button, Popover, Text } from "@nextui-org/react";
 import {
   doc,
   onSnapshot,
@@ -11,7 +11,6 @@ import {
   getDoc,
   DocumentData
 } from "firebase/firestore";
-import { CustomerDocument } from '../providers/CartProdiver';
 import { Notification } from '../@types/notification';
 import styled from 'styled-components';
 import uuid from 'react-uuid';
@@ -39,35 +38,28 @@ const Notifications = () => {
   const [unreadNotifications, setUnreadNotifications] = useState(0)
 
   const clearNotification = (index: number) => {
-    console.log('clearing notification at index', index);
     notifications[index].status = "Read"
     updateDoc(userRef, { notifications: notifications })
   }
 
 
   useEffect(() => {
-    console.warn("Notif UseEffect")
     const getUserDoc = async () => {
       userDocument = await getDoc(userRef);
       //@ts-ignore
       userData = userDocument.data();
-      console.warn('returning user data')
       return userDocument.data()
     }
 
     getUserDoc().then(res => {
       if (res) {
         const unsub = onSnapshot(doc(db, "users", res.uid), (doc) => {
-          console.warn('got snapshot')
           let data = doc.data();
           if (data?.notifications.length > 0) {
-            console.warn('entering notif map')
             // loop thru and count unread notifications
             let unReadCount = 0;
             data?.notifications.forEach((noti: Notification) => {
-              console.log('looping notifs')
               if (noti.status != "Read") {
-                console.warn('adding 1 to the unread')
                 unReadCount += 1;
               }
             })
@@ -97,7 +89,7 @@ const Notifications = () => {
                   if (noti.status !== "Read") {
                     return (
                       <NotiContainer key={uuid()}>
-                        <h3>{noti.message}</h3>
+                        <Text>{noti.message}</Text>
                         <NotiActionsContainer>
                           <Button onClick={() => clearNotification(index)} size="sm" color="error">Dismiss</Button>
                         </NotiActionsContainer>

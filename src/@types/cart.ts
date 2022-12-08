@@ -1,7 +1,7 @@
 import { DocumentSnapshot } from "firebase/firestore";
 import React from "react";
 import { Product, Products } from "./product";
-import {CustomerDocument} from "../providers/CartProdiver";
+import { CustomerDocument } from "../providers/CartProdiver";
 
 export type CartContextType = {
   cart: FirebaseCart | null;
@@ -11,6 +11,7 @@ export type CartContextType = {
   totalPrice: number;
   confirmOrder: () => void;
   userDocument: CustomerDocument;
+  modifyLineQty: (method: "dec" | "inc", index: number) => void;
 };
 
 interface FirebaseCartLine {
@@ -19,9 +20,10 @@ interface FirebaseCartLine {
   quantity: number,
   variation: string[] | undefined
   id: string
+  modifier: number
 }
 
-interface FirebaseCart extends Array<FirebaseCartLine>{}
+interface FirebaseCart extends Array<FirebaseCartLine> { }
 
 export interface CartLine {
   product: Product,
@@ -34,30 +36,30 @@ export class CartEntry {
   qty: number;
   variation: string[] | undefined
 
-  constructor (product: Product, qty: number, variation: string[] | undefined ) {
-      this.product = product;
-      this.qty = qty;
-      this.variation = variation;
+  constructor(product: Product, qty: number, variation: string[] | undefined) {
+    this.product = product;
+    this.qty = qty;
+    this.variation = variation;
   }
 
   toString() {
-      return this.product + ', ' + this.qty + ', ' + this.variation;
+    return this.product + ', ' + this.qty + ', ' + this.variation;
   }
 }
 
 // Firestore data converter
 export const CartConverter = {
   toFirestore: (cartEntry: CartLine) => {
-      return {
-          product: cartEntry.product,
-          qty: cartEntry.qty,
-          variation: cartEntry.variation
-          };
+    return {
+      product: cartEntry.product,
+      qty: cartEntry.qty,
+      variation: cartEntry.variation
+    };
   },
   fromFirestore: (snapshot: DocumentSnapshot, options: any) => {
-      const data = snapshot.data(options);
-      return new CartEntry(data?.product, data?.qty, data?.variation);
+    const data = snapshot.data(options);
+    return new CartEntry(data?.product, data?.qty, data?.variation);
   }
 };
 
-export interface Cart extends Array<CartLine> {}
+export interface Cart extends Array<CartLine> { }
