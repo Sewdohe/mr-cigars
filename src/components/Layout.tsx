@@ -7,13 +7,8 @@ import { NextUIProvider } from "@nextui-org/react";
 import { lightTheme } from "../styles/nextUITheme";
 
 const SiteContainer = styled.div`
-  display: flex;
-  flex-direction: column;
   padding: 0;
-  margin: 1rem auto;
   width: 100%;
-  justify-content: center;
-  align-items: center;
   height: 100%;
 `;
 

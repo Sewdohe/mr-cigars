@@ -27,6 +27,13 @@ const ButtonContainer = styled.div`
   }
 `
 
+const HeadingContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`
+
 const Profile = () => {
 
   const { currentUser } = useAuthValue();
@@ -45,9 +52,12 @@ const Profile = () => {
         <div style={{ width: '100%' }}>
           {!viewingOrder ? (
             <CenteredContainer>
-              <Text size={30}>
-                Hello - <Text size={50} color="primary" b>{userDocument.storeName}</Text>
-              </Text>
+              <HeadingContainer>
+                <Text size={30}>
+                  Hello -
+                </Text>
+                <Text size={50} color="primary" b>{userDocument.storeName}</Text>
+              </HeadingContainer>
               <Text>View Past Orders</Text>
               {userDocument.orders.length != 0 ? (
                 <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>

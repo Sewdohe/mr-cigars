@@ -83,10 +83,10 @@ const Nav = () => {
   } else {
     details = (
       <Row justify="center" align="center">
-        <Tooltip placement="left" content={"View Profile"}>
+        <Tooltip placement="bottom" content={"View Profile"}>
           <Avatar onClick={() => navigate('/profile')} color="primary" bordered css={{ margin: '0 1rem' }} text={currentUser.displayName!} />
         </Tooltip>
-        <Tooltip placement="left" content={"Sign Out"}>
+        <Tooltip placement="bottom" content={"Sign Out"}>
           <Button color="warning" size="sm" rounded auto flat onClick={handleSignOut}>
             <LogoutTwoTone />
           </Button>

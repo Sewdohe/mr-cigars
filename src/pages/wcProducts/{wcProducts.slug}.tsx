@@ -41,7 +41,7 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   const { addToCart } = React.useContext(CartContext) as CartContextType;
   const [qty, setQty] = useState(1);
   const [selectedImageVariation, setSelectedImageVariation] = useState(
-    product.images[0].src ? product.images[0].src : ""
+    product.images[0].src ? product.images[0].src.replace('cigars.local', 'dariwholesales.com') : ""
   );
 
   // SET ATTRIBUTE STATES

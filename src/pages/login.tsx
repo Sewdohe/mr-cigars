@@ -1,9 +1,31 @@
 import React, { useState, useContext, useEffect } from "react";
 import { navigate } from "gatsby";
 import Layout from "../components/Layout";
-import { Input, Container, Row, Col, Button, Text } from "@nextui-org/react";
+import { Input, Container, Row, Col, Button, Text, Spacer } from "@nextui-org/react";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import {auth} from '../components/Firebase'
+import styled from "styled-components";
+
+const FormContainer = styled.div`
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  padding: 1rem;
+  flex-direction: column;
+  padding: 0 1rem;
+`
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column
+`;
+
+const ActionsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+`
 
 const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -48,35 +70,35 @@ const Login = () => {
 
   return (
     <Layout>
-      <Container justify="center" style={{ maxWidth: "60%" }}>
-        <Text h2 css={{ textAlign: "center" }}>
-          Account Information
-        </Text>
-        <Row
-          gap={2}
-          css={{ margin: "1rem" }}
-          justify="space-around"
-          align="center"
-        >
-          <Input
-            labelPlaceholder="Email"
-            required
-            value={formValues.email}
-            name="email"
-            onChange={handleInputChange}
-            type="email"
-          />
-          <Input
-            labelPlaceholder="Password"
-            required
-            value={formValues.password}
-            name="password"
-            onChange={handleInputChange}
-            type="password"
-          />
-        </Row>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </Container>
+      <FormContainer>
+        <FormGroup>
+          <Text h2 css={{ textAlign: "center" }}>
+            Account Information
+          </Text>
+            <Input
+              label="Email"
+              required
+              underlined={true}
+              value={formValues.email}
+              name="email"
+              onChange={handleInputChange}
+              type="email"
+            />
+            <Spacer y={0.5} />
+            <Input
+              label="Password"
+              required
+              underlined={true}
+              value={formValues.password}
+              name="password"
+              onChange={handleInputChange}
+              type="password"
+            />
+        </FormGroup>
+        <ActionsContainer>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </ActionsContainer>
+      </FormContainer>
     </Layout>
   );
 };

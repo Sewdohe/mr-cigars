@@ -6,7 +6,7 @@ import { FirebaseCartLine, FirebaseCart } from "../providers/CartProdiver";
 import CartContext from "../contexts/CartContext";
 import { CartContextType } from '../@types/cart'
 import uuid from 'react-uuid';
-import { Text, Col, Button } from '@nextui-org/react'
+import { Text, Col } from '@nextui-org/react'
 import Logo from '../../assets/mr-cigars-logo-web.svg'
 
 const PageContainer = styled.div`
@@ -78,42 +78,95 @@ export const CartDisplay: React.FC<Props> = (props: Props) => {
             <h2>Your Cart is Empty</h2>
           </EmptyCart>
         )}
-        {cartValue?.map((value: FirebaseCartLine, index: number) => {
-          return (
-            <CartLineContainer
-              key={uuid()}
-            >
-              <Col>
-                <Text as="p">{value.itemName}</Text>
-                <Text as="p">{value.variation}</Text>
-              </Col>
-              <QtyContainer>
-                {!viewOnly && (
-                  <IconButton
-                    css={{
-                      display: 'inline-block'
-                    }}
-                    onClick={() => modifyLineQty("dec", index)}
-                  >
-                    <Minimize />
-                  </IconButton>
-                )}
-                <RightText>x{value.quantity}</RightText>
-                {!viewOnly && (
-                  <IconButton
-                    css={{
-                      display: 'inline-block'
-                    }}
-                    onClick={() => modifyLineQty("inc", index)}
-                  >
-                    <Add />
-                  </IconButton>
-                )}
-                <Text as="p" b>${(value.quantity * value.itemPrice).toFixed(2)}</Text>
-              </QtyContainer>
-            </CartLineContainer>
-          );
-        })}
+        {viewOnly ? (
+          <div>
+            {cartValue?.map((value: FirebaseCartLine, index: number) => {
+              return (
+                <CartLineContainer
+                  key={uuid()}
+                  style={{
+                    color: `${value.modifier < 0 ? 'red' : 'inherit'}`,
+                    fontWeight: `${value.modifier < 0 ? 'bold' : 'inherit'}`
+                  }}
+                >
+                  <Col>
+                    <Text color="inherit" as="p">{value.itemName}</Text>
+                    <Text color="inherit" as="p">{value.variation}</Text>
+                  </Col>
+                  <QtyContainer>
+                    {!viewOnly && (
+                      <IconButton
+                        css={{
+                          display: 'inline-block',
+                        }}
+                        onClick={() => modifyLineQty("dec", index)}
+                      >
+                        <Minimize />
+                      </IconButton>
+                    )}
+                    <RightText>x{value.quantity}</RightText>
+                    {value.modifier < 0 && (
+                      <Text as="p" b>&nbsp;(modified:{value.modifier})&nbsp;</Text>
+                    )}
+                    {!viewOnly && (
+                      <IconButton
+                        css={{
+                          display: 'inline-block'
+                        }}
+                        onClick={() => modifyLineQty("inc", index)}
+                      >
+                        <Add />
+                      </IconButton>
+                    )}
+                    <Text color="inherit" as="p" b>${(((value.quantity + value.modifier) * value.itemPrice)).toFixed(2)}</Text>
+                  </QtyContainer>
+                </CartLineContainer>
+              );
+            })
+            }
+          </div>
+
+        ) : (
+          <div>
+            {cart?.map((value: FirebaseCartLine, index: number) => {
+              return (
+                <CartLineContainer
+                  key={uuid()}
+                >
+                  <Col>
+                    <Text as="p">{value.itemName}</Text>
+                    <Text as="p">{value.variation}</Text>
+                  </Col>
+                  <QtyContainer>
+                    {!viewOnly && (
+                      <IconButton
+                        css={{
+                          display: 'inline-block'
+                        }}
+                        onClick={() => modifyLineQty("dec", index)}
+                      >
+                        <Minimize />
+                      </IconButton>
+                    )}
+                    <RightText>x{value.quantity}</RightText>
+                    {!viewOnly && (
+                      <IconButton
+                        css={{
+                          display: 'inline-block'
+                        }}
+                        onClick={() => modifyLineQty("inc", index)}
+                      >
+                        <Add />
+                      </IconButton>
+                    )}
+                    <Text as="p" b>${(value.quantity * value.itemPrice).toFixed(2)}</Text>
+                  </QtyContainer>
+                </CartLineContainer>
+              );
+            })}
+          </div>
+        )}
+
       </CartContainer>
     </PageContainer>
   )
