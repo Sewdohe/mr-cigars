@@ -159,7 +159,7 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
 
         <div style={{ margin: "1rem 1rem" }}>
           {product.description ? (
-            <p>{product.description}</p>
+            <p dangerouslySetInnerHTML={{__html: product.description}} />
           ) : (
             <p>no description for product</p>
           )}
