@@ -151,14 +151,14 @@ const config: GatsbyConfig = {
       resolve: "@pasdo501/gatsby-source-woocommerce",
       options: {
         // Base URL of WordPress site
-        api: "cigars.local",
+        api: "dariwholesales.com",
         verbose: true,
         // true if using https. false otherwise.
-        https: false,
+        https: true,
         query_string_auth: true, 
         api_keys: {
-          consumer_key: 'ck_0162a2e56cab5fcf46bf2a78f55ef72c137bd995',
-          consumer_secret: 'cs_62d1c26da64dd278da9b334b5706d3b6035ed2b7',
+          consumer_key: 'ck_ada5799ae191cd28cb0600b000a3276292ef4399',
+          consumer_secret: 'cs_74c07b9cc293bf8566c069dda61c98d39877faff',
         },
         // Array of strings with fields you'd like to create nodes for...
         fields: ["products", "products/categories", "variations"],
