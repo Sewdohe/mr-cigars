@@ -104,7 +104,12 @@ export const CartDisplay: React.FC<Props> = (props: Props) => {
                         <Minimize />
                       </IconButton>
                     )}
-                    <RightText>x{value.quantity}</RightText>
+                    <div style={{ display: 'inline-block', flexDirection: 'row' }}>
+                      <RightText>x{value.quantity}</RightText>
+                      {value.modifier < 0 && (
+                        <RightText> -&gt; x{value.quantity + value.modifier}</RightText>
+                      )}
+                    </div>
                     {value.modifier < 0 && (
                       <Text as="p" b>&nbsp;(modified:{value.modifier})&nbsp;</Text>
                     )}

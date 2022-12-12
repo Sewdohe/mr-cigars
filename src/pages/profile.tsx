@@ -1,12 +1,15 @@
 import React, { useContext } from 'react';
 import Layout from "../components/Layout";
-import { Text, Card, Button, Tooltip } from '@nextui-org/react'
+import { Text, Card, Button } from '@nextui-org/react'
 import { useAuthValue } from "../components/AuthContext";
 import styled from "styled-components";
 import CartContext from "../contexts/CartContext";
 import { CartContextType } from "../@types/cart";
 import ViewOrder from '../components/ViewOrder';
 import uuid from 'react-uuid';
+import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
+import { db } from "../components/Firebase";
+import { FirebaseCart, FirebaseOrder } from '../providers/CartProdiver';
 
 const CenteredContainer = styled.div`
   display: flex;
@@ -46,6 +49,28 @@ const Profile = () => {
     setSelectedOrder(orderID);
   }
 
+  const confirmOrder = () => {
+    const userDocRef = doc(db, 'users', currentUser!.uid);
+
+    userDocument.orders.forEach(order => {
+      if(order.id = selectedOrderID!) {
+        let orderToConfirm = order;
+        orderToConfirm!.status = "Complete"
+        order.status = "Complete"
+        const orderDoc = doc(db, 'orders', orderToConfirm?.id!);
+        // @ts-ignore
+        updateDoc(orderDoc, orderToConfirm).catch(e => console.error(e)).then(() => {
+          updateDoc(userDocRef, {
+            orders: userDocument.orders
+          }).catch(e => console.error(e)).then(() => {
+            setViewingOrder(false);
+            console.log('order status updated successfully')
+          })
+        })
+      }
+    })
+  }
+
   return (
     <Layout>
       {currentUser && userDocument ? (
@@ -63,19 +88,25 @@ const Profile = () => {
                 <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                   {userDocument.orders.map(order => {
                     return (
-                      <Card key={uuid()} css={{ margin: '1rem', minWidth: '250px', maxWidth: '25%', opacity: `${order.status == "Pending Review" ? 0.5 : 1.0}` }}>
+                      <Card key={uuid()} css={{ margin: '1rem', minWidth: '250px', maxWidth: '25%', opacity: `${order.status != ("Reviewed") ? 0.5 : 1.0}` }}>
                         <Card.Header css={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                           <h3>{new Date(order.orderDate.seconds * 1000).toDateString()}</h3>
                           <h6>Placed @ {new Date(order.orderDate.seconds * 1000).toTimeString()}</h6>
                         </Card.Header>
                         <Card.Body css={{ textAlign: 'center', fontSize: '2rem' }}>${order.total.toFixed(2)}</Card.Body>
                         <Card.Footer css={{ display: 'flex', justifyContent: 'center' }}>
-                          {order.status == "Reviewed" ? (
+                          {order.status == "Reviewed" && (
                             <div>
                               <Text css={{ textAlign: 'center' }}>Ready to Confirm</Text>
                               <Button onClick={() => viewOrder(order.id)}>View & Confirm</Button>
                             </div>
-                          ) : <Text css={{ color: 'red' }}><em>Pending Mr.Cigar's review</em></Text>}
+                          )}
+                          {order.status == "Complete" && (
+                            <Text css={{ color: 'green' }}><em>Order has been completed!</em></Text>
+                          )}
+                          {order.status == "Pending Review" && (
+                            <Text css={{ color: 'red' }}><em>Waiting on Review from Mr.Cigar</em></Text>
+                          )}
                         </Card.Footer>
                       </Card>
                     )
@@ -89,8 +120,9 @@ const Profile = () => {
             <div>
               <ViewOrder orderID={selectedOrderID} />
               <ButtonContainer>
-                <Button color="secondary">Confirm Order</Button>
-                <Button color="error" onClick={() => setViewingOrder(false)}>Cancel Order</Button>
+                <Button onClick={() => confirmOrder()} color="primary">Confirm Order</Button>
+                <Button color="secondary">Cancel Order</Button>
+                <Button color="error" onClick={() => setViewingOrder(false)}>Go Back</Button>
               </ButtonContainer>
             </div>
           )}

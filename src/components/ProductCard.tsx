@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Product } from "../@types/product";
 
 import { Card, Text, Button } from "@nextui-org/react";
+import { useAuthValue } from "./AuthContext";
 
 interface Props {
   item: Product;
@@ -21,20 +22,24 @@ const PriceText = styled.div`
 `;
 
 export const ProductCard = ({ item }: Props) => {
+  const { currentUser } = useAuthValue();
   return (
     <>
       <Card
         isPressable
         isHoverable
-        onClick={() => navigate("/wcProducts/" + item.slug)}
-        css={{flexGrow: '0', maxHeight: '450px'}}
+        onClick={() => navigate("/product/" + item.slug)}
+        css={{ flexGrow: "0", maxHeight: "450px" }}
       >
         <Card.Header>
           <Text h3>{item.name}</Text>
         </Card.Header>
         {item.images.length > 0 ? (
           <Card.Image
-            src={item.images[0].src.replace('cigars.local', 'dariwholesales.com')}
+            src={item.images[0].src.replace(
+              "cigars.local",
+              "dariwholesales.com"
+            )}
             width="300px"
             height="300px"
             objectFit="cover"
@@ -44,7 +49,14 @@ export const ProductCard = ({ item }: Props) => {
         )}
         <Card.Body css={{ overflow: "hidden" }}>
           {/* Using price * 1 to remove the trailing zeros from the number returned from wordpress */}
-          <PriceText>${item.price * 1}</PriceText>
+          {currentUser != null ? (
+            <>
+              {console.log(currentUser)}
+              <PriceText>${item.price * 1}</PriceText>
+            </>
+          ) : (
+            <PriceText>log in for prices</PriceText>
+          )}
         </Card.Body>
         {/* <Card.Footer
           css={{

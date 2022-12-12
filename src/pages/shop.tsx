@@ -10,6 +10,7 @@ import CategorySidebar from "../components/CategorySidebar";
 import uuid from "react-uuid";
 
 import SearchBar from "../components/Search";
+
 //@ts-ignore
 import { useFlexSearch } from "react-use-flexsearch";
 
@@ -44,8 +45,6 @@ const Shop: React.FC<PageProps<QueryResult>> = ({ data }) => {
 
   const results = useFlexSearch(searchQuery, index, store);
 
-  console.log(results)
-
   return (
     <Layout>
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -54,7 +53,7 @@ const Shop: React.FC<PageProps<QueryResult>> = ({ data }) => {
             <ul>
               {/* @ts-ignore */}
               {results.map((searchResult) => (
-                <li onClick={() => navigate(`/wcProducts/${searchResult.slug}`)} key={uuid()}>{searchResult.name}</li>
+                <li onClick={() => navigate(`/product/${searchResult.slug}`)} key={uuid()}>{searchResult.name}</li>
               ))}
             </ul>
           ) : (

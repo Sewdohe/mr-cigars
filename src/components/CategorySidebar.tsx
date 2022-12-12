@@ -107,7 +107,7 @@ export default function CategorySidebar() {
 							<ListItemButton
 								key={category.node.id}
 								onClick={() => {
-									navigate(`/wcProductsCategories/${category.node.slug}`)
+									navigate(`/category/${category.node.slug}`)
 								}}
 							>
 								<ListItemText primary={category.node.name} />
@@ -139,7 +139,7 @@ export default function CategorySidebar() {
 										<ListItemButton
 											key={uuid()}
 											onClick={() => {
-												navigate(`/wcProductsCategories/${category.node.slug}`);
+												navigate(`/category/${category.node.slug}`);
 											}}
 										>
 											<ListItemText primary={category.node.name} />

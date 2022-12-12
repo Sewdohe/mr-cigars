@@ -23,6 +23,7 @@
     "@mui/material": "^5.10.10",
     "@nextui-org/react": "^1.0.0-beta.10",
     "@pasdo501/gatsby-source-woocommerce": "^0.15.1",
+    "@theme-ui/mdx": "^0.15.4",
     "@types/js-search": "^1.4.0",
     "@types/styled-components": "^5.1.26",
     "babel-plugin-styled-components": "^2.0.7",

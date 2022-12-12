@@ -94,6 +94,9 @@ const Register = () => {
               storeCity: formValues.storeCity,
               stateTaxId: formValues.stateTaxId,
               fedTaxId: formValues.fedTaxId,
+              cart: [],
+              notifications: [],
+              orders: []
             }).catch((_reason) =>
               console.error("Couldn't add user data to database")
             );

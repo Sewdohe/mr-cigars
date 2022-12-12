@@ -8,6 +8,8 @@ import "firebase/functions"
 import CartProvider from "./src/providers/CartProdiver";
 import AuthProvider from "./src/components/AuthContext";
 
+
+
 export const wrapRootElement = ({ element }) => (
   <AuthProvider>
     <CartProvider>

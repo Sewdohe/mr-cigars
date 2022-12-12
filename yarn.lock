@@ -3130,6 +3130,29 @@
   dependencies:
     "defer-to-connect" "^2.0.0"
 
+"@theme-ui/core@^0.15.4":
+  "integrity" "sha512-QlbRrY7TV19LEMERA+vUANnte6VUPHoFfoU76lZ2aUys9w+Rr0IZGmzUxXSOg/172v9cxsvbVG0Uleny6B6Q8A=="
+  "resolved" "https://registry.npmjs.org/@theme-ui/core/-/core-0.15.4.tgz"
+  "version" "0.15.4"
+  dependencies:
+    "@theme-ui/css" "^0.15.4"
+    "deepmerge" "^4.2.2"
+
+"@theme-ui/css@^0.15.4":
+  "integrity" "sha512-6BBC2QAlS4vCSWqJc4KD4ORD2wJ6NS1aOxbI85Z+3nKzEsYaT/ihDtIvlXzPwHTd4tFTmeJqeoBVNLZrJ8L8CA=="
+  "resolved" "https://registry.npmjs.org/@theme-ui/css/-/css-0.15.4.tgz"
+  "version" "0.15.4"
+  dependencies:
+    "csstype" "^3.0.10"
+
+"@theme-ui/mdx@^0.15.4":
+  "integrity" "sha512-pDevKE15T9U/V8WIAvEEx5eXpj3OWn7Y9NRofcWq3VK525lt2v73rXInl7LIOIBa3rB/CTiickQL/YdC84hKoQ=="
+  "resolved" "https://registry.npmjs.org/@theme-ui/mdx/-/mdx-0.15.4.tgz"
+  "version" "0.15.4"
+  dependencies:
+    "@theme-ui/core" "^0.15.4"
+    "@theme-ui/css" "^0.15.4"
+
 "@tokenizer/token@^0.3.0":
   "integrity" "sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A=="
   "resolved" "https://registry.npmjs.org/@tokenizer/token/-/token-0.3.0.tgz"
@@ -5078,7 +5101,7 @@
   dependencies:
     "css-tree" "^1.1.2"
 
-"csstype@^3.0.2", "csstype@^3.1.1":
+"csstype@^3.0.10", "csstype@^3.0.2", "csstype@^3.1.1":
   "integrity" "sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw=="
   "resolved" "https://registry.npmjs.org/csstype/-/csstype-3.1.1.tgz"
   "version" "3.1.1"

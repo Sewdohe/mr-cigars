@@ -10,6 +10,7 @@ import { CartContextType } from "../../@types/cart";
 import { Button, Input } from "@nextui-org/react";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import uuid from "react-uuid";
+import { useAuthValue } from "../../components/AuthContext";
 
 interface Data {
   data: {
@@ -34,6 +35,7 @@ const Container = styled.div`
 
 const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   const { wcProducts: product } = data;
+  const { currentUser } = useAuthValue();
 
   let hasAttributes: boolean;
   let attributes: string[] = [];
@@ -167,7 +169,16 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
         </div>
 
         {/* PRODUCT PRICE */}
-        <PriceText>${product.price * 1}</PriceText>
+        {currentUser != null ? 
+        (
+          <>
+            {console.log(currentUser)}
+            <PriceText>${product.price * 1}</PriceText>
+          </>
+        ) : 
+        (
+          <PriceText>login for prices</PriceText>
+        )}
         <div style={{ width: "100px", padding: "8px" }}>
           <Input
             value={1}
