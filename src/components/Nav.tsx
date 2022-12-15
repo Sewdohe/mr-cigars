@@ -111,7 +111,7 @@ const Nav = () => {
   ];
 
   return (
-    <div>
+    <div style={{ marginBottom: '1rem' }}>
       <Navbar maxWidth="fluid" variant="static">
         <Navbar.Toggle showIn="sm" aria-label="toggle navigation" />
         <Navbar.Brand hideIn="xs">
