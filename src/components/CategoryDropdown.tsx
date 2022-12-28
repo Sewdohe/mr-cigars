@@ -49,7 +49,7 @@ const CategoryDropdown = (category: Category) => {
               <ListItemButton key={uuid()} sx={{ pl: 4 }}>
                 <ListItemText
                   onClick={() => {
-                    navigate(`/wcProductsCategories/${child.slug}`);
+                    navigate(`/category/${child.slug}`);
                   }}
                   key={uuid()}
                   primary={child.name}
