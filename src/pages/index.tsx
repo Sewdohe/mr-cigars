@@ -11,7 +11,7 @@ import { Product } from "../@types/product";
 import { PageProps } from 'gatsby'
 import { Grid } from "@nextui-org/react";
 import CategorySidebar from "../components/CategorySidebar";
-import { ProductCard } from '../components/ProductCard'
+import { ProductCard } from '../components/ProductCard';
 
 const Container = styled.div`
   display: flex;

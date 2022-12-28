@@ -169,8 +169,7 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
         {currentUser != null ? 
         (
           <>
-            {console.log(currentUser)}
-            <PriceText>${product.price * 1}</PriceText>
+            {currentUser.emailVerified ? <PriceText>${product.price * 1}</PriceText> : <PriceText>Please Verify Email to view prices</PriceText>}
           </>
         ) : 
         (
@@ -185,9 +184,11 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
         </div>
 
         {/* BUY BUTTON */}
-        <Button color="primary" onClick={addItemToCart}>
-          Add to Cart
-        </Button>
+        {currentUser != null && (
+          <Button disabled={!currentUser.emailVerified} color="primary" onClick={addItemToCart}>
+            Add to Cart
+          </Button>
+        )}
       </Container>
     </Layout>
   );

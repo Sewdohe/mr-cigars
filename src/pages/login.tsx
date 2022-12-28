@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { navigate } from "gatsby";
 import Layout from "../components/Layout";
-import { Input, Container, Row, Col, Button, Text, Spacer } from "@nextui-org/react";
-import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { Input, Button, Text, Spacer } from "@nextui-org/react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from '../components/Firebase'
 import styled from "styled-components";
 
@@ -22,9 +22,12 @@ const FormGroup = styled.div`
 
 const ActionsContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   margin-bottom: 2rem;
   margin-top: 2rem;
+  button {
+    margin: 1rem;
+  }
 `
 
 const Login = () => {
@@ -97,6 +100,7 @@ const Login = () => {
         </FormGroup>
         <ActionsContainer>
           <Button onClick={handleSubmit}>Submit</Button>
+          <Button color="warning" onClick={() => navigate('/reset')}>Forgot Password?</Button>
         </ActionsContainer>
       </FormContainer>
     </Layout>

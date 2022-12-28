@@ -1,4 +1,4 @@
-import { Input, Button, } from "@nextui-org/react";
+import { Input, Button } from "@nextui-org/react";
 import React from "react";
 import styled from "styled-components";
 
@@ -10,14 +10,14 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled(Input)`
-    width: 350px;
-`
+  width: 350px;
+`;
 
 const Form = styled.form`
-    display: flex;
-    width: 100%;
-    justify-content: center;
-`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
 
 //@ts-ignore
 const SearchBar = ({ searchQuery, setSearchQuery }) => (
@@ -29,7 +29,7 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => (
         onInput={(e) => setSearchQuery(e.target.value)}
         type="text"
         id="header-search"
-        placeholder="Search blog posts"
+        placeholder="Search for an Item"
         name="s"
       />
       {/* <Button type="submit">Search</Button> */}

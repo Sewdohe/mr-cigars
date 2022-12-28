@@ -48,8 +48,7 @@ export const ProductCard = ({ item }: Props) => {
           {/* Using price * 1 to remove the trailing zeros from the number returned from wordpress */}
           {currentUser != null ? (
             <>
-              {console.log(currentUser)}
-              <PriceText>${item.price * 1}</PriceText>
+              {currentUser.emailVerified ? <PriceText>${item.price * 1}</PriceText> : <PriceText>Please Verify Email</PriceText>}
             </>
           ) : (
             <PriceText>log in for prices</PriceText>

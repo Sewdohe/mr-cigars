@@ -10,12 +10,15 @@ import uuid from 'react-uuid';
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
 import { db } from "../components/Firebase";
 import { FirebaseCart, FirebaseOrder } from '../providers/CartProdiver';
+import { Link } from 'gatsby';
 
 const CenteredContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  padding: 1rem;
 `
 
 const ButtonContainer = styled.div`
@@ -35,6 +38,30 @@ const HeadingContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+`
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-items: center;
+  height: calc(100vh - 100px);
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+  }
+`
+
+const ProfileSidebar = styled.div`
+  padding: 1rem;
+  flex-basis: 20rem;
+  border-right: 1px solid gold;
+  @media screen and (max-width: 700px) {
+    border-bottom: 1px solid gold;
+    flex-basis: 10rem;
+  }
+  li {
+    text-decoration: underline;
+  }
 `
 
 const Profile = () => {
@@ -74,8 +101,15 @@ const Profile = () => {
   return (
     <Layout>
       {currentUser && userDocument ? (
-        <div style={{ width: '100%' }}>
+        <ProfileContainer style={{ width: '100%' }}>
           {!viewingOrder ? (
+          <>
+            <ProfileSidebar>
+              <h4>Account Tools</h4>
+              <ul>
+                <li><Link to='/reset'>Reset Password</Link></li>
+              </ul>
+            </ProfileSidebar>
             <CenteredContainer>
               <HeadingContainer>
                 <Text size={30}>
@@ -116,6 +150,7 @@ const Profile = () => {
                 <Text size={30}>Looks like you havent ordered before</Text>
               )}
             </CenteredContainer>
+          </>
           ) : (
             <div>
               <ViewOrder orderID={selectedOrderID} />
@@ -126,7 +161,7 @@ const Profile = () => {
               </ButtonContainer>
             </div>
           )}
-        </div>
+        </ProfileContainer>
       ) : (
         <Text size={50}>Looks like you are not logged in</Text>
       )}

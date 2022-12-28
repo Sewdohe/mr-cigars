@@ -3,7 +3,7 @@ import { navigate } from "gatsby";
 import Layout from "../components/Layout";
 import { Input, Button, Text, Spacer } from "@nextui-org/react";
 
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { auth } from "../components/Firebase";
 
 //@ts-ignore
@@ -79,7 +79,7 @@ const Register = () => {
       createUserWithEmailAndPassword(
         auth,
         formValues.email,
-        formValues.password
+        formValues.password,
       )
         .then((userCredential) => {
           // upload users information to database profile
@@ -105,7 +105,8 @@ const Register = () => {
             console.error("Error adding document: ", e);
           }
           // send user back to the home page if successful
-          navigate("/");
+          navigate("/welcome");
+          sendEmailVerification(auth.currentUser!);
         })
         .finally(() => {
           if (auth.currentUser) {
