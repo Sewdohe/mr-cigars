@@ -24,23 +24,23 @@ if (typeof window !== "undefined") {
   app = app! || initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
-  messaging = getMessaging(app);
+  // messaging = getMessaging(app);
 
-  getToken(messaging, {
-    vapidKey:
-      "BKSSMaQX_L713UQj5-QOXyXDZKECB7Fq-e-UMMNuztdpOxAt915O-H1iMNYaChB94QswmjvYjhm139LtQGZCzhY",
-  }).then((currentToken) => {
-    if (currentToken) {
-      console.log("got token!");
-    } else {
-      console.log("no token! Let's get one!");
-    }
-  });
+  // getToken(messaging, {
+  //   vapidKey:
+  //     "BKSSMaQX_L713UQj5-QOXyXDZKECB7Fq-e-UMMNuztdpOxAt915O-H1iMNYaChB94QswmjvYjhm139LtQGZCzhY",
+  // }).then((currentToken) => {
+  //   if (currentToken) {
+  //     console.log("got token!");
+  //   } else {
+  //     console.log("no token! Let's get one!");
+  //   }
+  // });
 
-  onMessage(messaging, (payload) => {
-    console.log('Message received. ', payload);
-    // ...
-  });
+  // onMessage(messaging, (payload) => {
+  //   console.log('Message received. ', payload);
+  //   // ...
+  // });
 }
 
 

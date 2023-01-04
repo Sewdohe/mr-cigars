@@ -44,6 +44,7 @@
     "gatsby-plugin-typography": "^4.24.0",
     "gatsby-remark-heading-slug": "^0.2.0",
     "gatsby-source-filesystem": "^4.24.0",
+    "gatsby-transformer-csv": "^4.25.0",
     "gatsby-transformer-sharp": "^4.24.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

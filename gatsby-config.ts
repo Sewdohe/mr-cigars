@@ -63,6 +63,10 @@ const config: GatsbyConfig = {
               id
               name
               slug
+              price
+              images {
+                src
+              }
             }
           }
         }
@@ -80,7 +84,7 @@ const config: GatsbyConfig = {
         // List of keys to store and make available in your UI. The values of
         // the keys are taken from the normalizer function below.
         // Default: all fields
-        store: ['id', 'name', 'slug'],
+        store: ['id', 'name', 'slug', 'image', 'price'],
 
         // Function used to map the result from the GraphQL query. This should
         // return an array of items to index in the form of flat objects
@@ -89,7 +93,14 @@ const config: GatsbyConfig = {
         //@ts-ignore
         normalizer: ({ data }) => {
           //@ts-ignore
-          return data.allWcProducts.nodes.map(item => item)
+          return data.allWcProducts.nodes.map((item: Product) => {
+            return {
+              id: item.id,
+              name: item.name,
+              slug: item.slug,
+              image: item.images[0].src
+            }
+          })
         }
       },
     },
@@ -146,6 +157,19 @@ const config: GatsbyConfig = {
         fields: ["products", "products/categories", "variations"],
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `data`,
+        path: `./src/data/`,
+      },
+    },
+    {
+      resolve: `gatsby-transformer-csv`,
+      options: {
+        noheader: false,
+      },
+    }
   ],
 };
 

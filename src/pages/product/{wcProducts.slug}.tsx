@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { graphql } from "gatsby";
+import React, { useState, useEffect } from "react";
+import { graphql, Link } from "gatsby";
 import Layout from "../../components/Layout";
 import { Product } from "../../@types/product";
 import styled from "styled-components";
@@ -135,9 +135,7 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
                           product.product_variations![neededIndex].image.src
                         );
                         setSelectedImageVariation(
-                          product.product_variations![
-                            neededIndex
-                          ].image.src
+                          product.product_variations![neededIndex].image.src
                         );
                       });
                     });
@@ -159,33 +157,50 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
 
         <div style={{ margin: "1rem 1rem" }}>
           {product.description ? (
-            <p dangerouslySetInnerHTML={{__html: product.description}} />
+            <p dangerouslySetInnerHTML={{ __html: product.description }} />
           ) : (
             <p>no description for product</p>
           )}
         </div>
 
         {/* PRODUCT PRICE */}
-        {currentUser != null ? 
-        (
+        {currentUser != null ? (
           <>
-            {currentUser.emailVerified ? <PriceText>${product.price * 1}</PriceText> : <PriceText>Please Verify Email to view prices</PriceText>}
+            {currentUser.emailVerified ? (
+              <PriceText>${product.price * 1}</PriceText>
+            ) : (
+              <PriceText>Please Verify Email to view prices</PriceText>
+            )}
           </>
-        ) : 
-        (
-          <PriceText>login for prices</PriceText>
+        ) : (
+          <>
+            <PriceText>log in for prices</PriceText>
+            <Link to="/register">Register to Shop Online</Link>
+          </>
         )}
+
+        {/* PRODUCT QUANTITY */}
         <div style={{ width: "100px", padding: "8px" }}>
           <Input
             value={1}
             type="number"
-            onChange={(e) => setQty(parseInt(e.target.value))}
+            aria-label="Quantity Box"
+            min="1"
+            max="100"
+            onChange={(e) => {
+              setQty(parseInt(e.target.value)) 
+            }
+          }
           />
         </div>
 
         {/* BUY BUTTON */}
         {currentUser != null && (
-          <Button disabled={!currentUser.emailVerified} color="primary" onClick={addItemToCart}>
+          <Button
+            disabled={!currentUser.emailVerified}
+            color="primary"
+            onClick={addItemToCart}
+          >
             Add to Cart
           </Button>
         )}

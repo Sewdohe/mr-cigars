@@ -7,7 +7,7 @@ import { Card, Text, Button } from "@nextui-org/react";
 import { useAuthValue } from "./AuthContext";
 
 interface Props {
-  item: Product;
+  item: SearchResultItem;
 }
 
 const PriceText = styled.div`
@@ -21,8 +21,25 @@ const PriceText = styled.div`
   overflow: hidden;
 `;
 
-export const ProductCard = ({ item }: Props) => {
+interface SearchResultItem {
+  name: string,
+  price: number,
+  image: string,
+  id: string,
+  slug: string
+}
+
+export const ProductCardSearch = ({ item }: Props) => {
   const { currentUser } = useAuthValue();
+
+  const debounce = (fn: Function, ms = 300) => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return function (this: any, ...args: any[]) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => fn.apply(this, args), ms);
+    };
+  };
+
   return (
     <>
       <Card
@@ -34,16 +51,12 @@ export const ProductCard = ({ item }: Props) => {
         <Card.Header>
           <Text h3>{item.name}</Text>
         </Card.Header>
-        {item.images.length > 0 ? (
           <Card.Image
-            src={item.images[0].src}
+            src={item.image}
             width="300px"
             height="300px"
             objectFit="cover"
           />
-        ) : (
-          <span>no image</span>
-        )}
         <Card.Body css={{ overflow: "hidden" }}>
           {/* Using price * 1 to remove the trailing zeros from the number returned from wordpress */}
           {currentUser != null ? (

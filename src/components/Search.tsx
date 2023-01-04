@@ -19,14 +19,30 @@ const Form = styled.form`
   justify-content: center;
 `;
 
+const debounce = (fn: Function, ms = 300) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms);
+  };
+};
+
 //@ts-ignore
 const SearchBar = ({ searchQuery, setSearchQuery }) => (
   <SearchContainer>
     <Form action="/search" method="get" autoComplete="off">
       <SearchInput
         aria-label="Search"
-        //@ts-ignore
-        onInput={(e) => setSearchQuery(e.target.value)}
+        // onInput={(e) => debounce(() => {
+        //     console.log('running the thing')
+        //     //@ts-ignore
+        //     setSearchQuery(e.target.value)
+        //   }, 250)
+        // }
+        onInput={debounce((e) => {
+            console.log("performing search")
+            setSearchQuery(e.target.value)
+        }, 250)}
         type="text"
         id="header-search"
         placeholder="Search for an Item"
