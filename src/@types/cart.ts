@@ -6,6 +6,7 @@ import { CustomerDocument } from "../providers/CartProdiver";
 export type CartContextType = {
   cart: FirebaseCart | null;
   addToCart: (item: Product, qty: number, variation?: string[]) => void;
+  deleteLine: (index: number) => void;
   getTotal: () => void;
   total: number;
   totalPrice: number;

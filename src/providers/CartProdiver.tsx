@@ -8,8 +8,11 @@ import {
   updateDoc,
   doc,
   arrayUnion,
-  onSnapshot, setDoc, DocumentSnapshot,
-  serverTimestamp, Timestamp
+  onSnapshot,
+  setDoc,
+  DocumentSnapshot,
+  serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 
 import uuid from "react-uuid";
@@ -35,26 +38,25 @@ export interface FirebaseOrder {
 }
 
 export interface CustomerDocument {
-  email: string,
-  fedTaxId: number,
-  stateTaxId: number,
-  storeAddress: string,
-  storeCity: string,
-  storeName: string,
-  storeZip: string,
-  userName: string,
-  orders: FirebaseOrder[],
-  cart: FirebaseCart,
-  uid: string,
-  notifications: Notification[]
+  email: string;
+  fedTaxId: number;
+  stateTaxId: number;
+  storeAddress: string;
+  storeCity: string;
+  storeName: string;
+  storeZip: string;
+  userName: string;
+  orders: FirebaseOrder[];
+  cart: FirebaseCart;
+  uid: string;
+  notifications: Notification[];
 }
 
 export interface FirebaseCart extends Array<FirebaseCartLine> {}
 
 type Props = {
-  children: JSX.Element | JSX.Element[]
-}
-
+  children: JSX.Element | JSX.Element[];
+};
 
 const CartProvider: React.FC<Props> = ({ children }: Props) => {
   const { currentUser } = useAuthValue();
@@ -62,31 +64,36 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
   const [cart, updateCart] = React.useState<FirebaseCart | null>(null);
   const [cartTotal, setCartTotal] = React.useState<number>(0);
   const [totalPrice, setTotalPrice] = React.useState<number>(0);
-  const [orders, setOrders] = React.useState<FirebaseOrder[] | null>(null)
-  const [storeName, setStoreName] = React.useState<string>('')
-  const [userDocument, setUserDocument] = React.useState<CustomerDocument | null>(null);
+  const [orders, setOrders] = React.useState<FirebaseOrder[] | null>(null);
+  const [storeName, setStoreName] = React.useState<string>("");
+  const [userDocument, setUserDocument] =
+    React.useState<CustomerDocument | null>(null);
 
   useEffect(() => {
     if (currentUser) {
       // @ts-ignore
-      const _unSub = onSnapshot(doc(db, "users", currentUser.uid), (doc: DocumentSnapshot<CustomerDocument>) => {
-        // console.log("cart init!");
-        let data: CustomerDocument = doc.data()!;
-        if(data) {
-          // console.log('user Data: ', data)
-          updateCart(data.cart);
-          getCartQty();
-          setOrders(data.orders)
-          setStoreName(data.storeName)
-          setUserDocument(data);
+      const _unSub = onSnapshot(
+        //@ts-ignore
+        doc(db, "users", currentUser.uid),
+        (doc: DocumentSnapshot<CustomerDocument>) => {
+          // console.log("cart init!");
+          let data: CustomerDocument = doc.data()!;
+          if (data) {
+            // console.log('user Data: ', data)
+            updateCart(data.cart);
+            getCartQty();
+            setOrders(data.orders);
+            setStoreName(data.storeName);
+            setUserDocument(data);
+          }
         }
-      });
+      );
     }
   }, [currentUser]);
 
   useEffect(() => {
-    getTotalPrice()
-  }, [cart])
+    getTotalPrice();
+  }, [cart]);
 
   // This function is a headache. Let me document this bitch...
   const addToCart = (
@@ -138,11 +145,14 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
             modifier: 0,
             variation: variation,
           }),
-        }).then(() => {
-          // console.log("item push successful!");
-        }).catch((e) => console.error(e)).finally(() => {
-          // getTotalPrice()
-        });
+        })
+          .then(() => {
+            // console.log("item push successful!");
+          })
+          .catch((e) => console.error(e))
+          .finally(() => {
+            // getTotalPrice()
+          });
       } else {
         // console.log("user is not logged in or cart is the same");
       }
@@ -171,12 +181,14 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
         if (currentUser && prevValue != newCart) {
           let docRef = doc(db, "users", currentUser.uid);
           updateDoc(docRef, {
-            cart: newCart
-          }).then(() => {
-            // console.log("item push successful!");
-          }).finally(() => {
-            // getTotalPrice()
+            cart: newCart,
           })
+            .then(() => {
+              // console.log("item push successful!");
+            })
+            .finally(() => {
+              // getTotalPrice()
+            });
         }
       } else {
         // this variation doesn't exist already. treat as a new line.
@@ -185,13 +197,71 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
         if (currentUser && prevValue != newCart) {
           let docRef = doc(db, "users", currentUser.uid);
           updateDoc(docRef, {
-            cart: newCart
-          }).then(() => {
-            // console.log("item push successful!");
-          }).finally(() => {
-            // getTotalPrice()
+            cart: newCart,
           })
+            .then(() => {
+              // console.log("item push successful!");
+            })
+            .finally(() => {
+              // getTotalPrice()
+            });
         }
+      }
+    }
+  };
+
+  // This function is a headache. Let me document this bitch...
+  const removeFromCart = (newItem: string, variation: string[] | undefined) => {
+    let prevValue = cart;
+
+    const existingIndex: number | undefined = cart?.findIndex((cart) => {
+      // get the index of the item in the cart array
+      // if the user has already added it to their cart.
+      return cart.id == newItem;
+    });
+    // console.log(existingIndex == -1 ? 'Item is a new line, no variations' : 'the item is already in the cart')
+
+    if (existingIndex == -1 && cart) {
+      // console.log('adding new item line')
+      // if eI == -1 than we didn't find the item in the cart already.
+      // we are REMOVING items here, so we don't really need this check
+    } else {
+      // console.log('item is in the cart, so its a new variation or a qty adjustment')
+      // we found the item in the cart.
+      // we will be modifying it in some way, so create a copy using slice
+      let newCart = cart!.slice();
+
+      // we have to do a find index again, narrowing it down to the attrib this time
+      const attribIndex = cart!.findIndex((cart) => {
+        return (
+          cart.variation![0] == variation![0] &&
+          cart.variation![1] == variation![1] &&
+          cart.variation![2] == variation![2] &&
+          cart.variation![3] == variation![3]
+        );
+      });
+
+      if (attribIndex != -1) {
+        // if we land here, this variation is already in the cart. Adjust qty only.
+        // console.log('this is a qty adjustment on a variation')
+        newCart.splice(attribIndex, 1);
+
+        // console.log("sending cart to firebase");
+        if (currentUser && prevValue != newCart) {
+          let docRef = doc(db, "users", currentUser.uid);
+          updateDoc(docRef, {
+            cart: newCart,
+          })
+            .then(() => {
+              // console.log("item push successful!");
+            })
+            .finally(() => {
+              // getTotalPrice()
+            });
+        }
+      } else {
+        // this variation doesn't exist in the cart.
+        // again, we are REMOVING items, and this check is pointless
       }
     }
   };
@@ -199,13 +269,13 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
   const getTotalPrice = () => {
     // console.warn('Calculating Price')
     let tempTotal: number = 0;
-    cart?.forEach(line => {
-      tempTotal += (line.quantity * line.itemPrice)
+    cart?.forEach((line) => {
+      tempTotal += line.quantity * line.itemPrice;
       // console.warn('line price is: ', line.quantity * line.itemPrice)
-    })
+    });
     setTotalPrice(tempTotal);
     // console.log('new total price is: ', cartTotal)
-  }
+  };
 
   const getCartQty = () => {
     let total = 0;
@@ -220,63 +290,85 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
 
   const modifyLineQty = (method: "inc" | "dec", index: number) => {
     let docRef = doc(db, "users", currentUser!.uid);
-    if(method == "inc" && cart) {
-      cart[index].quantity ++;
+    if (method == "inc" && cart) {
+      cart[index].quantity++;
       updateDoc(docRef, {
-        cart
-      }).then(() => console.log('incremented cart'))
+        cart,
+      }).then(() => console.log("incremented cart"));
     } else if (method == "dec" && cart) {
-      cart[index].quantity --;
+      cart[index].quantity--;
       updateDoc(docRef, {
-        cart
-      }).then(() => console.log('decremented cart'))
+        cart,
+      }).then(() => console.log("decremented cart"));
     }
-    
-  }
+  };
+
+  const deleteLine = (index: number) => {
+    let docRef = doc(db, "users", currentUser!.uid);
+
+    console.log(index)
+    console.log(cart)
+
+    let newCart = cart!;
+    newCart.splice(index, 1)
+
+
+
+    console.log(newCart)
+
+    updateDoc(docRef, {
+      cart: newCart
+    }).then(() => console.log("deleted line from cart"));
+  };
 
   const confirmOrder = () => {
     let newOrder = orders;
-    let firebaseOrder: FirebaseOrder
+    let firebaseOrder: FirebaseOrder;
 
     // transform the "cart" into an "order"
-    if(currentUser && cart) {
+    if (currentUser && cart) {
       firebaseOrder = {
         customer: storeName,
         customerUID: currentUser.uid,
         total: 0,
-        orderDate: Timestamp.fromDate(new Date),
+        orderDate: Timestamp.fromDate(new Date()),
         cart: cart,
         status: "Pending Review",
-        id: uuid()
-      }
+        id: uuid(),
+      };
 
       // calculate the order total before pushing to firebase
-      firebaseOrder.cart.forEach(cartLine => {
-        firebaseOrder.total += cartLine.itemPrice * cartLine.quantity
-      })
-      newOrder?.push({...firebaseOrder});
-      console.log(newOrder)
+      firebaseOrder.cart.forEach((cartLine) => {
+        firebaseOrder.total += cartLine.itemPrice * cartLine.quantity;
+      });
+      newOrder?.push({ ...firebaseOrder });
+      console.log(newOrder);
 
       // Ensure user is logged in, cart is loaded, and cart is not empty
       if (currentUser && cart && cart.length != 0) {
         let docRef = doc(db, "users", currentUser.uid); // get current user document
-        updateDoc(docRef, { // update user document with the new order
-          orders: newOrder
-        }).catch(err => {
-          console.error(err)
-        }).then(() => {
-          let orderRef = doc(db, "orders", firebaseOrder.id) // get orders document ref
-          setDoc(orderRef, {...firebaseOrder}).then(() => { // push said ref
-            console.log('also send order to orders collection')
-            console.log("Order Completed...clearing cart")
-            updateDoc(docRef, { // then if successful, clear the users current cart
-              cart: new Array(0)
-            }).then(() => console.log('cart cleared'))
-          })
+        updateDoc(docRef, {
+          // update user document with the new order
+          orders: newOrder,
         })
+          .catch((err) => {
+            console.error(err);
+          })
+          .then(() => {
+            let orderRef = doc(db, "orders", firebaseOrder.id); // get orders document ref
+            setDoc(orderRef, { ...firebaseOrder }).then(() => {
+              // push said ref
+              console.log("also send order to orders collection");
+              console.log("Order Completed...clearing cart");
+              updateDoc(docRef, {
+                // then if successful, clear the users current cart
+                cart: new Array(0),
+              }).then(() => console.log("cart cleared"));
+            });
+          });
       }
     }
-  }
+  };
 
   return (
     <CartContext.Provider
@@ -288,7 +380,8 @@ const CartProvider: React.FC<Props> = ({ children }: Props) => {
         totalPrice,
         confirmOrder,
         userDocument: userDocument!,
-        modifyLineQty
+        modifyLineQty,
+        deleteLine: deleteLine,
       }}
     >
       {children}

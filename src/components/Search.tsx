@@ -39,6 +39,7 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => (
         //     setSearchQuery(e.target.value)
         //   }, 250)
         // }
+        //@ts-ignore
         onInput={debounce((e) => {
             console.log("performing search")
             setSearchQuery(e.target.value)
