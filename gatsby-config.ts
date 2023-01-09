@@ -79,7 +79,7 @@ const config: GatsbyConfig = {
         // List of keys to index. The values of the keys are taken from the
         // normalizer function below.
         // Default: all fields
-        index: ['id', 'name', 'slug'],
+        index: ['id', 'name', 'slug',],
 
         // List of keys to store and make available in your UI. The values of
         // the keys are taken from the normalizer function below.
@@ -98,7 +98,8 @@ const config: GatsbyConfig = {
               id: item.id,
               name: item.name,
               slug: item.slug,
-              image: item.images[0].src
+              image: item.images[0].src,
+              price: item.price
             }
           })
         }
@@ -168,6 +169,7 @@ const config: GatsbyConfig = {
       resolve: `gatsby-transformer-csv`,
       options: {
         noheader: false,
+        extensions: [`csv`],
       },
     }
   ],

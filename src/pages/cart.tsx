@@ -5,7 +5,7 @@ import CartContext from "../contexts/CartContext";
 import { CartContextType } from "../@types/cart";
 import { Loading, Button, Modal, Text } from "@nextui-org/react";
 
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import { CartDisplay } from "../components/CartDisplay";
 
@@ -14,12 +14,15 @@ const TotalContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+  width: 100%;
+`;
 
 const CartPage = () => {
-  const { cart, totalPrice, confirmOrder } = useContext(CartContext) as CartContextType;
+  const { cart, totalPrice, confirmOrder } = useContext(
+    CartContext
+  ) as CartContextType;
 
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 900px)" });
 
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
@@ -33,13 +36,15 @@ const CartPage = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <div style={{ width: "100%" }}>
         {cart ? (
           <>
             <CartDisplay></CartDisplay>
             <TotalContainer>
               <Text h2>Order Total:</Text>
-              <Text b h2 color="red">${Math.trunc(totalPrice)}</Text>
+              <Text b h2 color="red">
+                ${Math.trunc(totalPrice)}
+              </Text>
             </TotalContainer>
           </>
         ) : (
@@ -48,11 +53,17 @@ const CartPage = () => {
       </div>
 
       {cart && cart.length > 0 ? (
-        <Button auto shadow onClick={handler}>
-          Confirm Order
-        </Button>
+        <TotalContainer>
+          <Button auto shadow onClick={handler}>
+            Confirm Order
+          </Button>
+        </TotalContainer>
       ) : (
-        <Button color="secondary">Go Shop!</Button>
+        <TotalContainer>
+          <Button auto shadow onClick={handler}>
+            Confirm Order
+          </Button>
+        </TotalContainer>
       )}
 
       <Modal
@@ -62,21 +73,28 @@ const CartPage = () => {
         onClose={closeHandler}
       >
         <Modal.Header>
-          <Text b id="modal-title" size={18}>
-            Look Good to You?
-          </Text>
+          <TotalContainer>
+            <Text b id="modal-title" size={18}>
+              Look Good to You?
+            </Text>
+          </TotalContainer>
         </Modal.Header>
         <Modal.Body></Modal.Body>
         <Modal.Footer>
-          <Button auto flat color="error" onClick={closeHandler}>
-            Close
-          </Button>
-          <Button auto onClick={() => {
-            confirmOrder();
-            closeHandler();
-          }}>
-            Send Order
-          </Button>
+          <TotalContainer>
+            <Button auto flat color="error" onClick={closeHandler}>
+              Close
+            </Button>
+            <Button
+              auto
+              onClick={() => {
+                confirmOrder();
+                closeHandler();
+              }}
+            >
+              Send Order
+            </Button>
+          </TotalContainer>
         </Modal.Footer>
       </Modal>
     </Layout>

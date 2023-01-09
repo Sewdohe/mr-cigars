@@ -8,7 +8,20 @@ import { FirebaseCartLine } from "../providers/CartProdiver";
 import { useAuthValue } from "../components/AuthContext";
 import { useMediaQuery } from "react-responsive";
 import { CartDisplay } from "./CartDisplay";
+import styled from "styled-components";
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: space-around;
+  width: 100%;
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+    justify-items: space-evenly;
+    align-items: space-evenly;
+  }
+`
 
 export const NextCart = () => {
   const { currentUser } = useAuthValue();
@@ -61,10 +74,12 @@ export const NextCart = () => {
             </Modal.Body>
 
             <Modal.Footer>
+            <ButtonsContainer>
               <Button onClick={() => navigate("/cart")}>View Cart</Button>
               <Button color="error" onClick={closeHandler}>
                 Close
               </Button>
+            </ButtonsContainer>
             </Modal.Footer>
           </Modal>
         </div>

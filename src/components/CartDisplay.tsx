@@ -75,7 +75,7 @@ export const CartDisplay: React.FC<Props> = (props: Props) => {
       <CartContainer>
         {total == 0 && cartValue?.length == 0 && (
           <EmptyCart>
-            <Logo />
+            <Logo style={{width: '100vw', margin: '1rem'}} />
             <h2>Your Cart is Empty</h2>
           </EmptyCart>
         )}

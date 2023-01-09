@@ -22,6 +22,15 @@ const CenteredContainer = styled.div`
   padding: 1rem;
 `;
 
+const InvoiceContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -32,6 +41,9 @@ const ButtonContainer = styled.div`
   button {
     margin: 0.5rem;
   }
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+  } 
 `;
 
 const HeadingContainer = styled.div`
@@ -113,6 +125,11 @@ const Profile = () => {
       {currentUser && userDocument ? (
         <ProfileContainer style={{ width: "100%" }}>
           {!viewingOrder ? (
+          
+
+
+
+          // FOR VIEWING THE PROFILE!!!
             <>
               <ProfileSidebar>
                 <h4>Account Tools</h4>
@@ -141,7 +158,8 @@ const Profile = () => {
                       width: "100%",
                       display: "flex",
                       flexWrap: "wrap",
-                      justifyContent: "center",
+                      justifyContent: "space-around",
+                      alignItems: "space-evenly"
                     }}
                   >
                     {userDocument.orders.map((order) => {
@@ -216,8 +234,14 @@ const Profile = () => {
                 )}
               </CenteredContainer>
             </>
+            
+
+
+
+            
           ) : (
-            <div>
+          // ORDER VIEWING!!!
+            <InvoiceContainer>
               <ViewOrder orderID={selectedOrderID} />
               <ButtonContainer>
                 <Button onClick={() => confirmOrder()} color="primary">
@@ -228,8 +252,11 @@ const Profile = () => {
                   Go Back
                 </Button>
               </ButtonContainer>
-            </div>
+            </InvoiceContainer>
           )}
+          
+
+          
         </ProfileContainer>
       ) : (
         <Text size={50}>Looks like you are not logged in</Text>

@@ -31,6 +31,7 @@ interface SearchResultItem {
 
 export const ProductCardSearch = ({ item }: Props) => {
   const { currentUser } = useAuthValue();
+  console.log(item)
 
   const debounce = (fn: Function, ms = 300) => {
     let timeoutId: ReturnType<typeof setTimeout>;
