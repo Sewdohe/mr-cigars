@@ -194,7 +194,8 @@ const Register = () => {
         >
           <Card.Body css={{
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            alignItems: 'center'
           }}>
             <Switch onChange={toggleForm} />
             <span>Quick sign-up for existing customers</span>

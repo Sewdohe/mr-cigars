@@ -32,3 +32,32 @@ exports.sendOrderNotification = functions.firestore
       });
     }
   });
+
+  exports.sendAdminNotif = functions.firestore.document('orders/{orderID}').onCreate(
+    async (snapshot) => {
+      admin.firestore()
+      .collection('emails')
+      .add({
+        to: "website@mrcigars.us",
+        message: {
+          subject: `New Order From ${snapshot.data().customer}`,
+          text: "",
+          html: `Review the order from ${snapshot.data().customer}  <br> Click <a href="http://192.168.0.81:4200/order/${snapshot.data().customer}">here</a> to review.`
+        }
+      }).then(() => console.log("Queued email for delivery!"))
+    }
+  )
+
+  exports.sendAdminNotifUsers = functions.firestore.document('users/{userID}').onCreate(
+    async (snapshot) => {
+      admin.firestore()
+      .collection('emails')
+      .add({
+        to: "website@mrcigars.us",
+        message: {
+          subject: `New Customer: ${snapshot.data().userName} for ${snapshot.data().storeName}`,
+          html: `<b>New User: </b> ${snapshot.data().userName} <br> <b>Store Name: </b> ${snapshot.data().storeName} <br> <b>City: </b> ${snapshot.data().storeCity}`
+        }
+      }).then(() => console.log("Queued email for delivery!"))
+    }
+  )
