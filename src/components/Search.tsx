@@ -30,7 +30,6 @@ const debounce = (fn: Function, ms = 300) => {
 //@ts-ignore
 const SearchBar = ({ searchQuery, setSearchQuery }) => (
   <SearchContainer>
-    <Form action="/search" method="get" autoComplete="off">
       <SearchInput
         aria-label="Search"
         // onInput={(e) => debounce(() => {
@@ -50,7 +49,6 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => (
         name="s"
       />
       {/* <Button type="submit">Search</Button> */}
-    </Form>
   </SearchContainer>
 );
 

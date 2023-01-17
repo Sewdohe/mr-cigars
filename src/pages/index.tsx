@@ -12,6 +12,7 @@ import { PageProps } from 'gatsby'
 import { Grid } from "@nextui-org/react";
 import CategorySidebar from "../components/CategorySidebar";
 import { ProductCard } from '../components/ProductCard';
+import AgeVerification from "../components/AgeVerification";
 
 const Container = styled.div`
   display: flex;
@@ -53,6 +54,7 @@ const IndexPage: React.FC<PageProps<QueryResult>> = ({ data }) => {
   return (
     <Layout>
       <Container>
+        <AgeVerification></AgeVerification>
         <Logo style={{
           maxWidth: '100%',
         }} />
