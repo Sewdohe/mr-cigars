@@ -87,7 +87,7 @@ const IndexPage: React.FC<PageProps<QueryResult>> = ({ data }) => {
                   <Grid.Container css={{ flexGrow: "0", maxWidth: '100vw' }} gap={2} justify="center">
                     {data.allWcProducts.edges.map(({ node: Product }) => {
                       return (
-                        <Grid xs={12} sm={6} md={4} lg={3} xl={3}>
+                        <Grid key={Product.id} xs={12} sm={6} md={4} lg={3} xl={3}>
                           <ProductCard item={Product}></ProductCard>
                         </Grid>
                       );

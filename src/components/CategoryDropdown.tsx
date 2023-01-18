@@ -46,7 +46,7 @@ const CategoryDropdown = (category: Category) => {
         <List component="div" disablePadding>
           {category.category.node.wordpress_children.map((child) => {
             return (
-              <ListItemButton key={uuid()} sx={{ pl: 4 }}>
+              <ListItemButton key={uuid()} sx={{ pl: 4, py: 0 }}>
                 <ListItemText
                   onClick={() => {
                     navigate(`/category/${child.slug}`);

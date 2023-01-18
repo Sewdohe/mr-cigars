@@ -53,7 +53,7 @@ const Notifications = () => {
 
     getUserDoc().then(res => {
       if (res) {
-        const unsub = onSnapshot(doc(db, "users", res.uid), (doc) => {
+        onSnapshot(doc(db, "users", res.uid), (doc) => {
           let data = doc.data();
           if (data?.notifications.length > 0) {
             // loop thru and count unread notifications

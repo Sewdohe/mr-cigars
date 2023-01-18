@@ -154,7 +154,7 @@ const Nav = () => {
         <Navbar.Content>
           {currentUser ? (
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-              <Notifications />
+              {/* <Notifications /> */}
               <NextCart />
             </div>
           ) : (<></>)}
