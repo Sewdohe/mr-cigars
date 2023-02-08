@@ -39,8 +39,6 @@ const LogoSVG = styled(Logo)`
   width: auto;
 `
 
-// TODO: Show Mr.Cigars logo
-
 // @ts-ignore
 const Nav = () => {
   let url: string = ""

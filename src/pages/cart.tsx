@@ -32,8 +32,6 @@ const CartPage = () => {
     console.log("closed");
   };
 
-  //TODO: show order sent confirmation
-
   return (
     <Layout>
       <div style={{ width: "100%" }}>

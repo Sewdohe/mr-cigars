@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import { graphql, useStaticQuery, navigate } from "gatsby";
 import styled from "styled-components";
 
-import { Card } from "@nextui-org/react";
+import { Card, Switch } from "@nextui-org/react";
 import { useMediaQuery } from "react-responsive";
 import CategoryDropdown from "./CategoryDropdown";
 
@@ -16,6 +16,7 @@ import { IconButton } from "./IconButton";
 
 import uuid from "react-uuid";
 import { Category, Fullscreen, MenuTwoTone } from "@mui/icons-material";
+import {Head} from "./Layout";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -42,11 +43,34 @@ interface Categories {
       }
     ];
   };
+  allWcProductsTags: {
+    edges: [{
+      node: {
+        id: string,
+        name: string,
+        slug: string
+      }
+    }]
+  }
 }
 
 const Nav = styled.nav`
   margin: 1rem;
 `;
+
+const SidebarHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+`
+
+const StyledSwitch = styled(Switch)`
+  align-self: flex-end;
+`
+
+const Spacer = styled.span`
+  flex-grow: 1;
+`
 
 export default function CategorySidebar() {
   const data: Categories = useStaticQuery(graphql`
@@ -69,6 +93,15 @@ export default function CategorySidebar() {
           }
         }
       }
+      allWcProductsTags {
+        edges {
+          node {
+            id
+            name
+            slug
+          }
+        }
+      }
     }
   `);
 
@@ -76,6 +109,10 @@ export default function CategorySidebar() {
     query: "(min-width: 1224px)",
   });
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const [displayTags, setDisplayTags] = useState(false);
+
+  const categories = data.allWcProductsCategories.edges;
+  const tags = data.allWcProductsTags.edges;
 
   // can pass a new state or let the function flip the state on its own
   const toggleDrawer = (newOpen?: boolean) => () => {
@@ -86,65 +123,59 @@ export default function CategorySidebar() {
     }
   };
 
+  const toggleDrawerType = () => {
+    setDisplayTags(!displayTags);
+  }
+
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
-  const list = (anchor: Anchor) => (
-    <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
-      role="presentation"
-      // onClick={toggleDrawer()}
-      onKeyDown={toggleDrawer()}
-    >
-      <List dense>
-        {data.allWcProductsCategories.edges.map((category) => {
-          {
-            return category.node.wordpress_children.length! > 0 ? (
-              <CategoryDropdown key={uuid()} category={category} />
-            ) : (
-              <div>
-                category.node.wordpress_parent == null (
-                <ListItemButton
-                  key={category.node.id}
-                  onClick={() => {
-                    navigate(`/category/${category.node.slug}`);
-                  }}
-                >
-                  <ListItemText primary={category.node.name} />
-                </ListItemButton>
-                ) : (<div></div>)
-              </div>
-            );
-          }
-        })}
-      </List>
-    </Box>
-  );
+  console.log(tags)
 
   return (
     <>
       {isDesktopOrLaptop ? (
         <Card css={{ maxWidth: "10%", minWidth: "190px" }}>
-          <Card.Header>Categories</Card.Header>
+            <SidebarHeader>
+              {!displayTags ? 'Categories' : 'Tags'}
+              <Spacer />
+              <StyledSwitch onChange={toggleDrawerType}>View Tags</StyledSwitch>
+            </SidebarHeader>
 
           <Divider />
           <Nav aria-label="categories">
             <List dense>
-              {data.allWcProductsCategories.edges.map((category) => {
-                return category.node.wordpress_children.length! > 0 ? (
-                  <CategoryDropdown key={uuid()} category={category} />
-                ) : category.node.wordpress_parent == null ? (
-                  <ListItemButton
-                    key={category.node.id}
-                    onClick={() => {
-                      navigate(`/category/${category.node.slug}`);
-                    }}
-                  >
-                    <ListItemText primary={category.node.name} />
-                  </ListItemButton>
-                ) : (
-                  <></>
-                );
-              })}
+              {!displayTags ? <>
+                {categories.map((category) => {
+                  return category.node.wordpress_children.length! > 0 ? (
+                      <CategoryDropdown key={uuid()} category={category} />
+                  ) : category.node.wordpress_parent == null ? (
+                      <ListItemButton
+                          key={category.node.id}
+                          onClick={() => {
+                            navigate(`/category/${category.node.slug}`);
+                          }}
+                      >
+                        <ListItemText primary={category.node.name} />
+                      </ListItemButton>
+                  ) : (
+                      <></>
+                  );
+                })}
+              </> : <>
+                {tags.map(tag => {
+                  return <>
+                    <ListItemButton
+                        key={tag.node.id}
+                        onClick={() => {
+                          navigate(`/tag/${tag.node.slug}`)
+                        }}
+                    >
+                      {tag.node.name}
+                    </ListItemButton>
+                  </>
+                })}
+              </>}
+
             </List>
           </Nav>
         </Card>
@@ -164,22 +195,45 @@ export default function CategorySidebar() {
             onClose={toggleDrawer(false)}
             variant="persistent"
           >
-            {data.allWcProductsCategories.edges.map((category) => {
-              return category.node.wordpress_children.length! > 0 ? (
-                <CategoryDropdown key={uuid()} category={category} />
-              ) : category.node.wordpress_parent == null ? (
-                <ListItemButton
-                  key={category.node.id}
-                  onClick={() => {
-                    navigate(`/category/${category.node.slug}`);
-                  }}
-                >
-                  <ListItemText primary={category.node.name} />
-                </ListItemButton>
-              ) : (
-                <></>
-              );
-            })}
+            <SidebarHeader>
+              {!displayTags ? 'Categories' : 'Tags'}
+              <Spacer />
+              <StyledSwitch onChange={toggleDrawerType}>View Tags</StyledSwitch>
+            </SidebarHeader>
+            <List style={{minWidth: '200px'}} dense>
+              {!displayTags ? <>
+                {categories.map((category) => {
+                  return category.node.wordpress_children.length! > 0 ? (
+                      <CategoryDropdown key={uuid()} category={category} />
+                  ) : category.node.wordpress_parent == null ? (
+                      <ListItemButton
+                          key={category.node.id}
+                          onClick={() => {
+                            navigate(`/category/${category.node.slug}`);
+                          }}
+                      >
+                        <ListItemText primary={category.node.name} />
+                      </ListItemButton>
+                  ) : (
+                      <></>
+                  );
+                })}
+              </> : <>
+                {tags.map(tag => {
+                  return <>
+                    <ListItemButton
+                        key={tag.node.id}
+                        onClick={() => {
+                          navigate(`/tag/${tag.node.slug}`)
+                        }}
+                    >
+                      {tag.node.name}
+                    </ListItemButton>
+                  </>
+                })}
+              </>}
+
+            </List>
           </Drawer>
         </div>
       ) : (

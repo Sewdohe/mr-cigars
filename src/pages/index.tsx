@@ -58,14 +58,16 @@ const IndexPage: React.FC<PageProps<QueryResult>> = ({ data }) => {
         <Logo style={{
           maxWidth: '100%',
         }} />
-        <Text css={{ width: "80%", fontSize: "1.4rem" }}>Mr.Cigars is a Tobacco Wholesale, serving eastern North Carolina for over 18 Years.
-          We are a small team of around 10 people - and we pride ourselves on our top-notch family style customer service! Come and shop with us,
-          you won't be disappointed!</Text>
+        <Text css={{ width: "80%", fontSize: "1.4rem" }}>Welcome to Mr.Cigars online! We are proud to offer a wide variety of
+          tobacco products to meet the needs of all our customers. Our selection includes Premium Cigars, Pipe Tobacco, Rolling Tobacco, Wraps,
+          Smoking Accessories, General Goods, Store Supplies, and much more. We strive to provide our customers with the highest quality products at the
+          best prices. Our knowledgable staff is always available to answer any questions you may have and help you find exactly what sells in YOUR store.
+          Shop with us today and experience the difference!</Text>
 
-        <Text h2>Open Account</Text>
+        <Text h2>New Accounts:</Text>
         <Text css={{ width: "80%", fontSize: "1.4rem" }}>
           Like to open an account? We'd love to have you as a customer!
-          Unfortunatly, we currently only accept customers in North Carolina. In
+          Currently, we currently only accept customers in North Carolina. In
           order to open an account, we will need your basic information, as well
           as information about your store, including your Federal tax-id number.
           We cannot open an account for you if you do not have a Federal tax-id

@@ -155,7 +155,7 @@ const config: GatsbyConfig = {
           consumer_secret: 'cs_74c07b9cc293bf8566c069dda61c98d39877faff',
         },
         // Array of strings with fields you'd like to create nodes for...
-        fields: ["products", "products/categories", "variations"],
+        fields: ["products", "products/categories", "products/tags"],
       },
     },
     {

@@ -11,6 +11,7 @@ import { Button, Input } from "@nextui-org/react";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import uuid from "react-uuid";
 import { useAuthValue } from "../../components/AuthContext";
+import Device from "../../utils/Breakpoints";
 
 interface Data {
   data: {
@@ -24,14 +25,98 @@ const PriceText = styled.span`
   font-weight: bold;
 `;
 
+// DONE: Adapt this layout to smaller screen size on mobile
 const Container = styled.div`
+  display: grid;
+  overflow: visible;
+  @media ${Device.mobileS} {
+    grid-template-areas:
+      "title"
+      "image"
+      "desc"
+      "price"
+      "attrib"
+      "button"
+      "qty";
+  }
+  @media ${Device.tablet} {
+    grid-template-areas:
+      "title title  title"
+      "image desc   desc"
+      "image desc   desc"
+      "image price  attrib"
+      "image button qty";
+  }
+  height: 100%;
+  width: 80%;
+  justify-content: center;
+  margin: 0 auto;
+`;
+
+const Title = styled.h1`
+  grid-area: title;
+  text-align: center;
+`;
+
+const ProdImage = styled.div`
+  grid-column: 1 / -1;
+  grid-area: image;
+  @media ${Device.mobileS} {
+    max-width: 340px;
+  }
+`;
+
+const Attribs = styled.div`
+  grid-area: attrib;
+  justify-self: center;
+  overflow: visible;
+  align-self: center;
+  @media ${Device.mobileS} {
+    justify-self: center;
+  }
+`;
+
+const Price = styled.div`
+  grid-area: price;
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-self: center;
+`;
+
+const Qty = styled.div`
+  grid-area: qty;
+  justify-self: start;
+  align-self: center;
+  @media ${Device.mobileS} {
+    justify-self: center;
+  }
+`;
+
+const Desc = styled.div`
+  grid-area: desc;
+  align-self: flex-end;
+  justify-self: center;
+  @media ${Device.mobileS} {
+    justify-self: center;
+  }
+`;
+
+const Purchase = styled.div`
+  grid-area: button;
+  justify-self: center;
+  align-self: center;
+  @media ${Device.mobileS} {
+    justify-self: center;
+  }
+`;
+
+const FlexCenter = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  height: 100%;
-`;
+`
 
 const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   const { wcProducts: product } = data;
@@ -94,24 +179,24 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
   return (
     <Layout>
       <Container>
-        {/* PRODUCT NAME */}
-        <h1>{product.name}</h1>
+        {/* // SECTION: Name */}
+        <Title>{product.name}</Title>
 
-        {/* PRODUCT IMAGE */}
-        <div>
+        {/* // SECTION: Image */}
+        <ProdImage>
           {product.images.length > 0 ? (
             <img
-              style={{ maxWidth: "175px", maxHeight: "175px" }}
+              // style={{ maxWidth: "500px", maxHeight: "500px" }}
               src={selectedImageVariation}
               alt={"product image"}
             />
           ) : (
             <span>no image</span>
           )}
-        </div>
+        </ProdImage>
 
-        {/* ATTRIBUTE BOXES */}
-        <Box sx={{ minWidth: "100px" }}>
+        {/* // SECTION: Attribute Boxes */}
+        <Attribs>
           {product.attributes?.map((attribute, index) => {
             return (
               <FormControl key={uuid()} fullWidth style={{ margin: "10px" }}>
@@ -153,34 +238,36 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
               </FormControl>
             );
           })}
-        </Box>
+        </Attribs>
 
-        <div style={{ margin: "1rem 1rem" }}>
+        <Desc style={{ margin: "1rem 1rem" }}>
           {product.description ? (
             <p dangerouslySetInnerHTML={{ __html: product.description }} />
           ) : (
             <p>no description for product</p>
           )}
-        </div>
+        </Desc>
 
-        {/* PRODUCT PRICE */}
-        {currentUser != null ? (
-          <>
-            {currentUser.emailVerified ? (
-              <PriceText>${product.price * 1}</PriceText>
-            ) : (
-              <PriceText>Please Verify Email to view prices</PriceText>
-            )}
-          </>
-        ) : (
-          <>
-            <PriceText>log in for prices</PriceText>
-            <Link to="/register">Register to Shop Online</Link>
-          </>
-        )}
+        {/* // SECTION: Price */}
+        <Price>
+          {currentUser != null ? (
+            <FlexCenter>
+              {currentUser.emailVerified ? (
+                <PriceText>${product.price * 1}</PriceText>
+              ) : (
+                <PriceText>Please Verify Email to view prices</PriceText>
+              )}
+            </FlexCenter>
+          ) : (
+            <FlexCenter>
+              <PriceText>log in for prices</PriceText>
+              <Link to="/register">Register to Shop Online</Link>
+            </FlexCenter>
+          )}
+        </Price>
 
-        {/* PRODUCT QUANTITY */}
-        <div style={{ width: "100px", padding: "8px" }}>
+        {/* // SECTION: Quantity */}
+        <Qty style={{ width: "100px", padding: "8px" }}>
           <Input
             value={1}
             type="number"
@@ -188,22 +275,24 @@ const ProductTemplate: React.FC<Data> = ({ data }: Data) => {
             min="1"
             max="100"
             onChange={(e) => {
-              setQty(parseInt(e.target.value)) 
-            }
-          }
+              setQty(parseInt(e.target.value));
+            }}
           />
-        </div>
+        </Qty>
 
-        {/* BUY BUTTON */}
-        {currentUser != null && (
-          <Button
-            disabled={!currentUser.emailVerified}
-            color="primary"
-            onClick={addItemToCart}
-          >
-            Add to Cart
-          </Button>
-        )}
+        {/* // SECTION: Buy Button */}
+        <Purchase>
+          {currentUser != null && (
+            <Button
+              disabled={!currentUser.emailVerified}
+              color="primary"
+              onClick={addItemToCart}
+            >
+              Add to Cart
+            </Button>
+          )}
+        </Purchase>
+        
       </Container>
     </Layout>
   );
