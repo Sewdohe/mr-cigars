@@ -4,8 +4,9 @@ import { ProductCard } from "../components/ProductCard";
 import { Product } from "../@types/product";
 import Layout from "../components/Layout";
 import styled from "styled-components";
+import device from "../utils/Breakpoints";
 
-import { Grid } from "@nextui-org/react";
+import { Grid, Button } from "@nextui-org/react";
 import CategorySidebar from "../components/CategorySidebar";
 import uuid from "react-uuid";
 
@@ -44,6 +45,24 @@ const Container = styled.div`
   width: 100%;
 `;
 
+const FilterBar = styled.div`
+  display: flex;
+  @media ${device.mobileS} {
+    flex-direction: column;
+  }
+  @media ${device.tablet} {
+    flex-direction: row;
+  }
+  justify-content: space-evenly;
+  padding: 1rem 0;
+`
+
+const FilterBarItem = styled(Button)`
+  display: block;
+  font-weight: bold;
+  margin: 1rem;
+`
+
 const Shop: React.FC<PageProps<QueryResult>> = ({ data }) => {
   if (typeof window !== "undefined") {
     // const query = new URLSearchParams(search).get("s");
@@ -58,6 +77,17 @@ const Shop: React.FC<PageProps<QueryResult>> = ({ data }) => {
   return (
     <Layout>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <FilterBar>
+        <FilterBarItem>
+          Featured Items
+        </FilterBarItem>
+        <FilterBarItem>
+          New Items
+        </FilterBarItem>
+        <FilterBarItem>
+          Top Sellers
+        </FilterBarItem>
+      </FilterBar>
       <Container>
         <Grid.Container
           css={{ flexGrow: "0", maxWidth: "100vw" }}
