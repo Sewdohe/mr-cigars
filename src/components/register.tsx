@@ -112,9 +112,12 @@ const Register = () => {
     // GET THE CUSTOMERS INFORMATION IF CUSTOMER NUMBER WAS ENTERED
     console.log(formValues);
     if (formValues.customerNumber != "") {
+      let foundCustomer = false;
       // if customer number isn't empty
       console.log("checking if exists...");
+      console.log(`Looking for customer number ${formValues.customerNumber}`)
       data.allDataCsv.edges.forEach((edge) => {
+        //TODO: Fix this function! It's givng errors
         if (edge.node.num == formValues.customerNumber) {
           setCustomerFound(true)
           formValues.storeName = edge.node.name
@@ -124,11 +127,14 @@ const Register = () => {
           formValues.fedTaxId = "quick-sign"
           formValues.stateTaxId = "quick-sign"
           console.log(`This is ${edge.node.name} trying to sign up`)
-        }
-        if(!customerFound) {
-          navigate('/error')
+          foundCustomer = true
         }
       });
+      if(foundCustomer) {
+        console.log("Identified customer successfully!")
+      } else {
+        navigate('/error')
+      }
     }
 
     /* e.preventDefault() */
@@ -375,7 +381,7 @@ const Register = () => {
                 value={formValues.customerNumber}
                 name="customerNumber"
                 onChange={handleInputChange}
-                type="text"
+                type="number"
               />
               <Spacer y={0.5} />
             </FormGroup>
